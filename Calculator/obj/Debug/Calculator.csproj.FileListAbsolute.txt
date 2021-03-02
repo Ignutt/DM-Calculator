@@ -1,0 +1,10 @@
+D:\spacework\freelance\Calculator\Calculator\bin\Debug\Calculator.exe.config
+D:\spacework\freelance\Calculator\Calculator\bin\Debug\Calculator.exe
+D:\spacework\freelance\Calculator\Calculator\bin\Debug\Calculator.pdb
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.csprojAssemblyReference.cache
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Properties.Resources.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.csproj.GenerateResource.cache
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.csproj.CoreCompileInputs.cache
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.exe
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.pdb
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Form1.resources
