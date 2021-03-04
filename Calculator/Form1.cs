@@ -103,105 +103,7 @@ namespace Calculator
         {
             inputField.Text += ")";
         }
-        /*
-        private void buttonX1_Click(object sender, EventArgs e)
-        {
-            inputField.Text += "X1";
-        }
-
-        private void buttonX2_Click(object sender, EventArgs e)
-        {
-            inputField.Text += "X2";
-        }
-
-        private void buttonX3_Click(object sender, EventArgs e)
-        {
-            inputField.Text += "X3";
-        }
-
-        private void buttonX4_Click(object sender, EventArgs e)
-        {
-            inputField.Text += "X4";
-        }
-
-        private void buttonX5_Click(object sender, EventArgs e)
-        {
-            inputField.Text += "X5";
-        }
-
-        private void buttonX6_Click(object sender, EventArgs e)
-        {
-            inputField.Text += "X6";
-        }*/
-
-
-        List<String> signsАlphabet = new List<string>();
-        List<String> variablsAlphabet = new List<string>();
-        List<Tuple<string, int>> stepList = new List<Tuple<string, int>>();
-
-        private void CreateSignsAlphabet()
-        {
-            signsАlphabet.Add("∨");
-            signsАlphabet.Add("∧");
-            signsАlphabet.Add("¬");
-            signsАlphabet.Add("⊕");
-            signsАlphabet.Add("→");
-            signsАlphabet.Add("≡");
-            signsАlphabet.Add("↓");
-            signsАlphabet.Add("↑");
-        }
-
-        private void CreateVariablesAlphabet()
-        {
-            variablsAlphabet.Add("a");
-            variablsAlphabet.Add("b");
-            variablsAlphabet.Add("c");
-            variablsAlphabet.Add("x");
-            variablsAlphabet.Add("y");
-            variablsAlphabet.Add("z");
-            variablsAlphabet.Add("1");
-            variablsAlphabet.Add("2");
-        }
-
-        public Form1()
-        {
-            InitializeComponent();
-            CreateSignsAlphabet();
-            CreateVariablesAlphabet();
-        }
-
-        private void print(String s)
-        {
-            Console.WriteLine(s);
-        }
-
-        public int GetVariablesCount()
-        {
-            int res = 0;
-            List<String> copyVars = new List<String>(variablsAlphabet);
-            for (int i = 0; i < inputField.Text.Length; i++)
-            {
-                for (int j = 0; j < copyVars.Count; j++)
-                {
-                    if (copyVars[j] == inputField.Text[i].ToString())
-                    {
-                        res++;
-                        print("res++");
-                        copyVars.RemoveAt(j);
-                    }
-                }
-            }
-            return res;
-        }
-
-        private void Solve(object sender, EventArgs e)
-        {
-            MakeStepsList();
-            MakeTable();
-            //Calculate();
-        }
-
-        private bool isEqual(string c, List<string> v)
+        public bool isEqual(string c, List<string> v)
         {
             for (int i = 0; i < v.Count; i++)
             {
@@ -214,67 +116,189 @@ namespace Calculator
             return false;
         }
 
-        private void Calculate()
+        public void print(string str)
         {
-            debug.Text = isEqual(inputField.Text[stepList[0].Item2 - 1].ToString(), variablsAlphabet).ToString();
-            for (int i = 0; i < GetStepsCount(); i++)
+            Console.WriteLine(str);
+        }
+
+        // ------------------------------------------------------------------
+
+        VariablesAlphabet variablesAlphabet = new VariablesAlphabet();
+        SignsAlphabet signsAlphabet = new SignsAlphabet();
+        InputString inputString = new InputString();
+        Table table = new Table();
+        Solve solve = new Solve();
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Solve(object sender, EventArgs e)
+        {
+            inputString.CreateVariablesList(inputField.Text);
+            table1.Text = table.MakeTable(inputField.Text);
+        }
+
+
+    }
+
+
+    public class VariablesAlphabet
+    {
+        private List<char> variablesAlphabet = new List<char>();
+
+        public VariablesAlphabet()
+        {
+            variablesAlphabet.Add('a');
+            variablesAlphabet.Add('b');
+            variablesAlphabet.Add('c');
+            variablesAlphabet.Add('x');
+            variablesAlphabet.Add('y');
+            variablesAlphabet.Add('z');
+            variablesAlphabet.Add('1');
+            variablesAlphabet.Add('2');
+        }
+
+        public List<char> GetAlphabet()
+        {
+            return variablesAlphabet;
+        }
+    }
+
+    public class SignsAlphabet
+    {
+        private List<char> signsAlphabet = new List<char>();
+
+        public SignsAlphabet()
+        {
+            signsAlphabet.Add('∨');
+            signsAlphabet.Add('∧');
+            signsAlphabet.Add('¬');
+            signsAlphabet.Add('⊕');
+            signsAlphabet.Add('→');
+            signsAlphabet.Add('≡');
+            signsAlphabet.Add('↓');
+            signsAlphabet.Add('↑');
+        }
+
+        public List<char> GetAlphabet()
+        {
+            return signsAlphabet;
+        }
+    }
+
+    public class InputString
+    {
+        private List<char> variablesString = new List<char>();
+        private VariablesAlphabet variablesAlphabet = new VariablesAlphabet();
+        private SignsAlphabet signsAlphabet = new SignsAlphabet();
+        private List<Tuple<char, int>> stepList = new List<Tuple<char, int>>();
+
+        public InputString()
+        {
+
+        }
+
+        public void CreateVariablesList(string inputField)
+        {
+            List<char> copyVars = new List<char>(variablesAlphabet.GetAlphabet());
+            variablesString = new List<char>();
+            for (int i = 0; i < inputField.Length; i++)
             {
-                if (isEqual(inputField.Text[stepList[i].Item2 - 1].ToString(), variablsAlphabet)
-                    && isEqual(inputField.Text[stepList[i].Item2 + 1].ToString(), variablsAlphabet))
+                for (int j = 0; j < copyVars.Count; j++)
                 {
-                    //debug.Text = "YES!";
+                    if (copyVars[j] == inputField[i])
+                    {
+                        variablesString.Add(inputField[i]);
+                        copyVars.RemoveAt(j);
+                    }
                 }
-                //else debug.Text = "NO!";
             }
         }
 
-        private void MakeTable()
-        {
-            table1.Text = "";
-            int n = 0;
-            int count = GetVariablesCount();
-            for (int i = 0; i < Math.Pow(2, count); i++)
-            {
-                string s = Convert.ToString(n, 2);
-                while (s.Length < count) s = "0" + s;
-                for (int j = 0; j < count; j++)
-                {
-                    table1.Text += s[j];
-                }
-                table1.Text += "\r\n";
-                n++;
-            }
-        }
-
-        private int GetStepsCount()
+        public int GetVariablesCount(string inputField)
         {
             int res = 0;
-            for (int i = 0; i < inputField.Text.Length; i++)
+            List<char> copyVars = new List<char>(variablesAlphabet.GetAlphabet());
+            for (int i = 0; i < inputField.Length; i++)
             {
-                for (int j = 0; j < signsАlphabet.Count; j++)
+                for (int j = 0; j < copyVars.Count; j++)
                 {
-                    if (inputField.Text[i].ToString() == signsАlphabet[j])
+                    if (copyVars[j] == inputField[i])
                     {
                         res++;
-                        stepList.Add(new Tuple<string, int>(signsАlphabet[j], i));
+                        copyVars.RemoveAt(j);
                     }
                 }
             }
             return res;
         }
 
-        private void MakeStepsList()
+        public int GetStepsCount(string inputField)
         {
-            for (int i = 0; i < inputField.Text.Length; i++)
+            int res = 0;
+            for (int i = 0; i < inputField.Length; i++)
             {
-                for (int j = 0; j < signsАlphabet.Count; j++)
+                for (int j = 0; j < signsAlphabet.GetAlphabet().Count; j++)
                 {
-                    if (inputField.Text[i].ToString() == signsАlphabet[j])
+                    if (inputField[i] == signsAlphabet.GetAlphabet()[j])
                     {
-                        stepList.Add(new Tuple<string, int>(signsАlphabet[j], i));
+                        res++;
+                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetAlphabet()[j], i));
                     }
                 }
             }
+            return res;
+        }
+    }
+
+    public class Solve
+    {
+        public bool SolveExample(bool a, bool b, char sign)
+        {
+            switch (sign)
+            {
+                case '∨': return a || b;
+                case '∧': return a && b;
+                case '⊕': return a ^ b;
+                case '≡': return !a && !b || a && b;
+                case '→': return !a || b;
+                case '↓': return !a && !b;
+                case '↑': return !a || !b;
+            }
+            return false;
+        }
+
+        public bool SolveExample(bool a)
+        {
+            return !a;
+        }
+    }
+
+    public class Table
+    {
+        InputString inputString = new InputString();
+        List<List<int>> local_table = new List<List<int>>();
+        public string MakeTable(string str)
+        {
+            string table = "";
+            int n = 0;
+            int count = inputString.GetVariablesCount(str);
+            for (int i = 0; i < Math.Pow(2, count); i++)
+            {
+                local_table.Add(new List<int>());
+                string s = Convert.ToString(n, 2);
+                while (s.Length < count) s = "0" + s;
+                for (int j = 0; j < count; j++)
+                {
+                    table += s[j];
+                    local_table[i].Add(int.Parse(s[j].ToString()));
+                }
+                table += "\r\n";
+                n++;
+            }
+            return table;
         }
     }
 }
