@@ -125,22 +125,38 @@ namespace Calculator
 
         VariablesAlphabet variablesAlphabet = new VariablesAlphabet();
         SignsAlphabet signsAlphabet = new SignsAlphabet();
-        InputString inputString = new InputString();
-        Table table = new Table();
+        InputString inputString;
+        Table table;
         Solve solve = new Solve();
 
         public Form1()
         {
             InitializeComponent();
+            inputString = new InputString(inputField.Text);
+            table = new Table(Math.Pow(2, inputString.GetVariablesCount(inputField.Text)), 
+                inputString.GetVariablesCount(inputField.Text), inputField.Text);
+        }
+
+        private List<Control> GetChildren(Control control = null)
+        {
+            //if (control == null) control = table2;
+
+            List<Control> list = control.Controls.OfType<Control>().ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Control child = list[i];
+                list.AddRange(GetChildren(child));
+            }
+
+            return list;
         }
 
         private void Solve(object sender, EventArgs e)
         {
-            inputString.CreateVariablesList(inputField.Text);
-            table1.Text = table.MakeTable(inputField.Text);
+            DefaultSolve form = new DefaultSolve(inputField.Text);
+            form.Visible = true;
         }
-
-
     }
 
 
@@ -195,12 +211,7 @@ namespace Calculator
         private SignsAlphabet signsAlphabet = new SignsAlphabet();
         private List<Tuple<char, int>> stepList = new List<Tuple<char, int>>();
 
-        public InputString()
-        {
-
-        }
-
-        public void CreateVariablesList(string inputField)
+        public InputString(string inputField)
         {
             List<char> copyVars = new List<char>(variablesAlphabet.GetAlphabet());
             variablesString = new List<char>();
@@ -215,6 +226,26 @@ namespace Calculator
                     }
                 }
             }
+        }
+
+        public List<Tuple<char, int>> GetStepList(string inputField)
+        {
+            for (int i = 0; i < inputField.Length; i++)
+            {
+                for (int j = 0; j < signsAlphabet.GetAlphabet().Count; j++)
+                {
+                    if (inputField[i] == signsAlphabet.GetAlphabet()[j])
+                    {
+                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetAlphabet()[j], i));
+                    }
+                }
+            }
+            return stepList;
+        }
+
+        public List<char> GetVariables()
+        {
+            return variablesString;
         }
 
         public int GetVariablesCount(string inputField)
@@ -245,7 +276,7 @@ namespace Calculator
                     if (inputField[i] == signsAlphabet.GetAlphabet()[j])
                     {
                         res++;
-                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetAlphabet()[j], i));
+                        //stepList.Add(new Tuple<char, int>(signsAlphabet.GetAlphabet()[j], i));
                     }
                 }
             }
@@ -276,7 +307,8 @@ namespace Calculator
         }
     }
 
-    public class Table
+
+    /*public class Table
     {
         InputString inputString = new InputString();
         List<List<int>> local_table = new List<List<int>>();
@@ -299,6 +331,183 @@ namespace Calculator
                 n++;
             }
             return table;
+        }
+    }*/
+    public class TableSolved
+    {
+        private List<List<TableCell>> _table = new List<List<TableCell>>();
+        private InputString inputString;
+        private double rows;
+        private int column;
+
+        private Table truthTable;
+        public TableSolved(double rows, int column, string input, Table truthTable)
+        {
+            this.rows = rows;
+            this.column = column;
+            inputString = new InputString(input);
+
+            this.truthTable = truthTable; 
+
+            int n = 0;
+
+            _table.Add(new List<TableCell>());
+
+            for (int i = 0; i < column; i++)
+            {
+                int index = inputString.GetStepList(input)[i].Item2;
+                string text = input[index - 1].ToString() + " " + input[index].ToString() + " " + input[index + 1].ToString();
+                TableCell newButton = new TableCell(text, 0, i);
+                newButton.SetColor(0, 255, 100, 255);
+                _table[0].Add(newButton);
+            }
+
+            for (int i = 1; i <= rows; i++)
+            {
+                _table.Add(new List<TableCell>());
+
+                string s = Convert.ToString(n, 2);
+                while (s.Length < column) s = "0" + s;
+                for (int j = 0; j < column; j++)
+                {
+                    int index = inputString.GetStepList(input)[i].Item2;
+                    string text = truthTable.GetCell(truthTable.GetVariableIndex(input[index - 1]), j).Text;
+                    TableCell newButton = new TableCell("0", i + 1, j);
+                    Console.Write(s[j].ToString() + ' ');
+
+                    _table[i].Add(newButton);
+                }
+                Console.WriteLine();
+                n++;
+            }
+        }
+
+        public List<Tuple<char, int>> GetStepsList(string str)
+        {
+            return inputString.GetStepList(str);
+        }
+
+        public TableCell GetCell(int x, int y)
+        {
+            return _table[x][y];
+        }
+
+        public List<List<TableCell>> GetTable()
+        {
+            return _table;
+        }
+
+        public double GetRows()
+        {
+            return rows;
+        }
+
+        public int GetColumns()
+        {
+            return column;
+        }
+    }
+
+    public class Table
+    {
+        private List<List<TableCell>> _table = new List<List<TableCell>>();
+
+        private List<char> variables = new List<char>();
+        private InputString inputString;
+        private double rows;
+        private int column;
+        public Table(double rows, int column, string input)
+        {
+            this.rows = rows;
+            this.column = column;
+            inputString = new InputString(input);
+
+            int n = 0;
+            _table.Add(new List<TableCell>());
+
+            for (int i = 0; i < column; i++)
+            {
+                TableCell newButton = new TableCell(inputString.GetVariables()[i].ToString(), 0, i);
+                newButton.SetColor(0, 255, 100, 255);
+                _table[0].Add(newButton);
+                variables.Add(inputString.GetVariables()[i]);
+            }
+
+            for (int i = 1; i <= rows; i++)
+            {
+                _table.Add(new List<TableCell>());
+
+                string s = Convert.ToString(n, 2);
+                while (s.Length < column) s = "0" + s;
+                for (int j = 0; j < column; j++)
+                {
+                    TableCell newButton = new TableCell(s[j].ToString(), i + 1, j);
+                    Console.Write(s[j].ToString() + ' ');
+                    
+                    _table[i].Add(newButton);
+                }
+                Console.WriteLine();
+                n++;
+            }
+        }
+
+        public int GetVariableIndex(char var)
+        {
+            for (int i = 0; i < variables.Count; i++)
+            {
+                if (variables[i] == var) return i;
+            }
+
+            Console.WriteLine("Can not find variable");
+            return -1;
+        }
+        public TableCell GetCell(int x, int y)
+        {
+            return _table[x][y];
+        }
+
+        public List<List<TableCell>> GetTable()
+        {
+            return _table;
+        }
+
+        public double GetRows()
+        {
+            return rows;
+        }
+
+        public int GetColumns()
+        {
+            return column;
+        }
+    }
+
+    public class TableCell : Button
+    {
+        public string value;
+        int x, y;
+        public TableCell (string text, int x, int y)
+        {
+            Enabled = false;
+            BackColor = Color.FromArgb(255, 200, 200, 200);
+            Text = text;
+            Size = new Size(50, 30);
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+
+            value = text;
+            this.x = x;
+            this.y = y;
+        }
+
+        public void SetColor(int x, int y, int z, int w)
+        {
+            BackColor = Color.FromArgb(w, x, y, z);
+        }
+
+        public string GetValue()
+        {
+            return value;
         }
     }
 }

@@ -8,3 +8,4 @@ D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.csproj.CoreCom
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.exe
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.pdb
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Form1.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.DefaultSolve.resources

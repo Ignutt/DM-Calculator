@@ -33,7 +33,6 @@ namespace Calculator
             this.buttonOr = new System.Windows.Forms.Button();
             this.buttonNot = new System.Windows.Forms.Button();
             this.buttonAnd = new System.Windows.Forms.Button();
-            this.table1 = new System.Windows.Forms.TextBox();
             this.buttonXor = new System.Windows.Forms.Button();
             this.buttonSchaffer = new System.Windows.Forms.Button();
             this.buttonEq = new System.Windows.Forms.Button();
@@ -99,16 +98,6 @@ namespace Calculator
             this.buttonAnd.Text = "∧";
             this.buttonAnd.UseVisualStyleBackColor = true;
             this.buttonAnd.Click += new System.EventHandler(this.buttonAnd_Click);
-            // 
-            // table1
-            // 
-            this.table1.AllowDrop = true;
-            this.table1.Location = new System.Drawing.Point(106, 414);
-            this.table1.Multiline = true;
-            this.table1.Name = "table1";
-            this.table1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.table1.Size = new System.Drawing.Size(322, 174);
-            this.table1.TabIndex = 10;
             // 
             // buttonXor
             // 
@@ -366,7 +355,7 @@ namespace Calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 600);
+            this.ClientSize = new System.Drawing.Size(522, 430);
             this.Controls.Add(this.debug);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonX6);
@@ -390,7 +379,6 @@ namespace Calculator
             this.Controls.Add(this.buttonPierce);
             this.Controls.Add(this.buttonImplic);
             this.Controls.Add(this.buttonXor);
-            this.Controls.Add(this.table1);
             this.Controls.Add(this.buttonAnd);
             this.Controls.Add(this.buttonNot);
             this.Controls.Add(this.buttonOr);
@@ -411,7 +399,6 @@ namespace Calculator
         private System.Windows.Forms.Button buttonOr;
         private System.Windows.Forms.Button buttonNot;
         private System.Windows.Forms.Button buttonAnd;
-        private System.Windows.Forms.TextBox table1;
         private System.Windows.Forms.Button buttonXor;
         private System.Windows.Forms.Button buttonSchaffer;
         private System.Windows.Forms.Button buttonEq;
