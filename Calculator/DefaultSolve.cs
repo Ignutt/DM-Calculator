@@ -32,28 +32,13 @@ namespace Calculator
             tableOut.Size = new Size(inputString.GetVariablesCount(str) * 50 + 15 * inputString.GetVariablesCount(str), 
                 tableOut.Size.Height);
 
-            tableSolved = new TableSolved(inputString.GetStepsCount(str), inputString.GetStepsCount(str), str,
+            tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetStepsCount(str), str,
                 table);
             tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 50 + 15 * inputString.GetStepsCount(str),
                 tableOut.Size.Height);
 
 
             Solve();
-        }
-
-        private List<Control> GetChildren(Control control = null)
-        {
-            if (control == null) control = tableOut;
-
-            List<Control> list = control.Controls.OfType<Control>().ToList();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                Control child = list[i];
-                list.AddRange(GetChildren(child));
-            }
-
-            return list;
         }
 
         private void Solve()

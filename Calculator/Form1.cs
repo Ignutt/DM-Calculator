@@ -341,6 +341,39 @@ namespace Calculator
         private int column;
 
         private Table truthTable;
+
+        private bool Solve(bool x, bool y, char sign)
+        {
+            switch (sign)
+            {
+                case '∨': 
+                    return (x || y);
+                    break;
+                case '∧': 
+                    return (x && y);
+                    break;
+                case '¬': 
+                    return (!x);
+                    break;
+                case '⊕': 
+                    return (!x&&y || x&&!y);
+                    break;
+                case '→': 
+                    return (!x || y);
+                    break;
+                case '≡': 
+                    return (!x && !y || x && y);
+                    break;
+                case '↓': 
+                    return (!x && !y);
+                    break;
+                case '↑':
+                    return (!x || !y);
+                    break;
+                default: return false;
+            }
+        }
+
         public TableSolved(double rows, int column, string input, Table truthTable)
         {
             this.rows = rows;
@@ -366,14 +399,16 @@ namespace Calculator
             {
                 _table.Add(new List<TableCell>());
 
-                string s = Convert.ToString(n, 2);
-                while (s.Length < column) s = "0" + s;
                 for (int j = 0; j < column; j++)
                 {
-                    int index = inputString.GetStepList(input)[i].Item2;
-                    string text = truthTable.GetCell(truthTable.GetVariableIndex(input[index - 1]), j).Text;
-                    TableCell newButton = new TableCell("0", i + 1, j);
-                    Console.Write(s[j].ToString() + ' ');
+                    int indexOfSign = inputString.GetStepList(input)[j].Item2;
+                    string word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign - 1])).Text;
+                    string word2 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign + 1])).Text;
+                    //Console.WriteLine(Solve(Convert.ToBoolean(word1), Convert.ToBoolean(word2), inputString.GetStepList(input)[j].Item1));
+                    string text = Solve(int.Parse(word1) != 0, int.Parse(word2) != 0, inputString.GetStepList(input)[j].Item1) ? "1" : "0";
+                    TableCell newButton = new TableCell(text, j, i);
+
+                    Console.Write("1");
 
                     _table[i].Add(newButton);
                 }
@@ -427,7 +462,7 @@ namespace Calculator
 
             for (int i = 0; i < column; i++)
             {
-                TableCell newButton = new TableCell(inputString.GetVariables()[i].ToString(), 0, i);
+                TableCell newButton = new TableCell(inputString.GetVariables()[i].ToString(), i, 0);
                 newButton.SetColor(0, 255, 100, 255);
                 _table[0].Add(newButton);
                 variables.Add(inputString.GetVariables()[i]);
@@ -441,12 +476,12 @@ namespace Calculator
                 while (s.Length < column) s = "0" + s;
                 for (int j = 0; j < column; j++)
                 {
-                    TableCell newButton = new TableCell(s[j].ToString(), i + 1, j);
-                    Console.Write(s[j].ToString() + ' ');
+                    TableCell newButton = new TableCell(s[j].ToString(), j, i);
+                   // Console.Write(s[j].ToString() + ' ');
                     
                     _table[i].Add(newButton);
                 }
-                Console.WriteLine();
+               // Console.WriteLine();
                 n++;
             }
         }
