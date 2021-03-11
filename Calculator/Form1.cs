@@ -107,18 +107,12 @@ namespace Calculator
         {
             for (int i = 0; i < v.Count; i++)
             {
-                Console.WriteLine(c + " " + v[i]);
                 if (c == v[i])
                 {
                     return true;
                 }
             }
             return false;
-        }
-
-        public void print(string str)
-        {
-            Console.WriteLine(str);
         }
 
         // ------------------------------------------------------------------
@@ -184,23 +178,29 @@ namespace Calculator
 
     public class SignsAlphabet
     {
-        private List<char> signsAlphabet = new List<char>();
+        private List<char> signsAlphabet1 = new List<char>();
+        private List<char> signsAlphabet2 = new List<char>();
 
         public SignsAlphabet()
         {
-            signsAlphabet.Add('∨');
-            signsAlphabet.Add('∧');
-            signsAlphabet.Add('¬');
-            signsAlphabet.Add('⊕');
-            signsAlphabet.Add('→');
-            signsAlphabet.Add('≡');
-            signsAlphabet.Add('↓');
-            signsAlphabet.Add('↑');
+            signsAlphabet2.Add('∨');
+            signsAlphabet1.Add('∧');
+            signsAlphabet1.Add('¬');
+            signsAlphabet2.Add('⊕');
+            signsAlphabet2.Add('→');
+            signsAlphabet2.Add('≡');
+            signsAlphabet2.Add('↓');
+            signsAlphabet2.Add('↑');
         }
 
-        public List<char> GetAlphabet()
+        public List<char> GetFirstAlphabet()
         {
-            return signsAlphabet;
+            return signsAlphabet1;
+        }
+
+        public List<char> GetSecondAlphabet()
+        {
+            return signsAlphabet2;
         }
     }
 
@@ -232,11 +232,22 @@ namespace Calculator
         {
             for (int i = 0; i < inputField.Length; i++)
             {
-                for (int j = 0; j < signsAlphabet.GetAlphabet().Count; j++)
+                for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
-                    if (inputField[i] == signsAlphabet.GetAlphabet()[j])
+                    if (inputField[i] == signsAlphabet.GetFirstAlphabet()[j])
                     {
-                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetAlphabet()[j], i));
+                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetFirstAlphabet()[j], i));
+                    }
+                }
+            }
+
+            for (int i = 0; i < inputField.Length; i++)
+            {
+                for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
+                {
+                    if (inputField[i] == signsAlphabet.GetSecondAlphabet()[j])
+                    {
+                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetSecondAlphabet()[j], i));
                     }
                 }
             }
@@ -271,12 +282,19 @@ namespace Calculator
             int res = 0;
             for (int i = 0; i < inputField.Length; i++)
             {
-                for (int j = 0; j < signsAlphabet.GetAlphabet().Count; j++)
+                for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
-                    if (inputField[i] == signsAlphabet.GetAlphabet()[j])
+                    if (inputField[i] == signsAlphabet.GetFirstAlphabet()[j])
                     {
                         res++;
-                        //stepList.Add(new Tuple<char, int>(signsAlphabet.GetAlphabet()[j], i));
+                    }
+                }
+
+                for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
+                {
+                    if (inputField[i] == signsAlphabet.GetSecondAlphabet()[j])
+                    {
+                        res++;
                     }
                 }
             }
@@ -389,7 +407,11 @@ namespace Calculator
             for (int i = 0; i < column; i++)
             {
                 int index = inputString.GetStepList(input)[i].Item2;
-                string text = input[index - 1].ToString() + " " + input[index].ToString() + " " + input[index + 1].ToString();
+                string text;
+                if (input[index] != '¬')
+                {
+                    text = input[index - 1].ToString() + " " + input[index].ToString() + " " + input[index + 1].ToString();
+                } else text = input[index].ToString() + " " + input[index + 1].ToString();
                 TableCell newButton = new TableCell(text, 0, i);
                 newButton.SetColor(0, 255, 100, 255);
                 _table[0].Add(newButton);
@@ -402,17 +424,25 @@ namespace Calculator
                 for (int j = 0; j < column; j++)
                 {
                     int indexOfSign = inputString.GetStepList(input)[j].Item2;
-                    string word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign - 1])).Text;
-                    string word2 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign + 1])).Text;
-                    //Console.WriteLine(Solve(Convert.ToBoolean(word1), Convert.ToBoolean(word2), inputString.GetStepList(input)[j].Item1));
-                    string text = Solve(int.Parse(word1) != 0, int.Parse(word2) != 0, inputString.GetStepList(input)[j].Item1) ? "1" : "0";
-                    TableCell newButton = new TableCell(text, j, i);
+                    string word1 = "1";
+                    string word2 = "1";
+                    string text = "";
+                    if (input[indexOfSign] != '¬')
+                    {
+                        word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign - 1])).Text;
+                        word2 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign + 1])).Text;
+                        text = Solve(int.Parse(word1) != 0, int.Parse(word2) != 0, inputString.GetStepList(input)[j].Item1) ? "1" : "0";
+                    } else
+                    {
+                        word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign + 1])).Text;
+                        text = Solve(int.Parse(word1) != 0, int.Parse(word2) != 0, inputString.GetStepList(input)[j].Item1) ? "1" : "0";
+                    }
 
-                    Console.Write("1");
+
+                    TableCell newButton = new TableCell(text, j, i);
 
                     _table[i].Add(newButton);
                 }
-                Console.WriteLine();
                 n++;
             }
         }
@@ -477,11 +507,8 @@ namespace Calculator
                 for (int j = 0; j < column; j++)
                 {
                     TableCell newButton = new TableCell(s[j].ToString(), j, i);
-                   // Console.Write(s[j].ToString() + ' ');
-                    
                     _table[i].Add(newButton);
                 }
-               // Console.WriteLine();
                 n++;
             }
         }

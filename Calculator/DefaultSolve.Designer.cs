@@ -45,7 +45,8 @@ namespace Calculator
             // tableOutFunc
             // 
             this.tableOutFunc.AutoScroll = true;
-            this.tableOutFunc.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.tableOutFunc.BackColor = System.Drawing.SystemColors.Control;
+            this.tableOutFunc.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tableOutFunc.Location = new System.Drawing.Point(478, 12);
             this.tableOutFunc.Name = "tableOutFunc";
             this.tableOutFunc.Size = new System.Drawing.Size(460, 571);

@@ -32,10 +32,13 @@ namespace Calculator
             tableOut.Size = new Size(inputString.GetVariablesCount(str) * 50 + 15 * inputString.GetVariablesCount(str), 
                 tableOut.Size.Height);
 
+
             tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetStepsCount(str), str,
                 table);
             tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 50 + 15 * inputString.GetStepsCount(str),
                 tableOut.Size.Height);
+
+            tableOutFunc.Location = tableOut.Location + new Size(tableOut.Size.Width + 2, 0);
 
 
             Solve();
