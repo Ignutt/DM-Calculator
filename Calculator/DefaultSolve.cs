@@ -20,6 +20,8 @@ namespace Calculator
         TableSolved tableSolved;
         Solve solve = new Solve();
 
+        SolvingString solvingString;
+
         List<List<TableCell>> _table = new List<List<TableCell>>();
 
 
@@ -28,14 +30,16 @@ namespace Calculator
             InitializeComponent();
             str = input;
             inputString = new InputString(input);
+            solvingString = new SolvingString(input);
+
             table = new Table(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetVariablesCount(str), str);
             tableOut.Size = new Size(inputString.GetVariablesCount(str) * 50 + 15 * inputString.GetVariablesCount(str), 
                 tableOut.Size.Height);
 
 
-            tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetStepsCount(str), str,
+            tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), solvingString.GetStepsList().Count, str,
                 table);
-            tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 50 + 15 * inputString.GetStepsCount(str),
+            tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 50 + 15 * solvingString.GetStepsList().Count,
                 tableOut.Size.Height);
 
             tableOutFunc.Location = tableOut.Location + new Size(tableOut.Size.Width + 2, 0);
@@ -54,7 +58,7 @@ namespace Calculator
                 }
             }
 
-            for (int i = 0; i < tableSolved.GetRows() + 1; i++)
+            for (int i = 0; i < 1; i++)
             {
                 for (int j = 0; j < tableSolved.GetColumns(); j++)
                 {

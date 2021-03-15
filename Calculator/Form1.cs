@@ -198,6 +198,21 @@ namespace Calculator
             return signsAlphabet1;
         }
 
+        public bool isSign(char sign)
+        {
+            for (int i = 0; i < signsAlphabet1.Count; i++)
+            {
+                if (sign == signsAlphabet1[i]) return true;
+            }
+
+            for (int i = 0; i < signsAlphabet2.Count; i++)
+            {
+                if (sign == signsAlphabet2[i]) return true;
+            }
+
+            return false;
+        }
+
         public List<char> GetSecondAlphabet()
         {
             return signsAlphabet2;
@@ -351,15 +366,86 @@ namespace Calculator
             return table;
         }
     }*/
+
+    class SolvingString
+    {
+        private List<string> solvingString = new List<string>();
+        private List<int> stepList = new List<int>();
+        private SignsAlphabet signsAlphabet = new SignsAlphabet();
+
+        public SolvingString(string str)
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '¬')
+                {
+                    solvingString.Add(str[i].ToString() + str[i + 1]);
+                    i++;
+                } else solvingString.Add(str[i].ToString());
+            }
+
+            for (int i = 0; i < solvingString.Count; i++)
+            {
+                for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
+                {
+                    if (solvingString[i] == signsAlphabet.GetFirstAlphabet()[j].ToString() || Exist(i, signsAlphabet.GetFirstAlphabet()[j]))
+                    {
+                        stepList.Add(i);
+                    }
+                }
+            }
+
+            for (int i = 0; i < solvingString.Count; i++)
+            {
+                for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
+                {
+                    if (solvingString[i] == signsAlphabet.GetSecondAlphabet()[j].ToString())
+                    {
+                        stepList.Add(i);
+                    }
+                }
+            }
+        }
+
+        public bool Exist(int index, char value)
+        {
+            for (int i = 0; i < solvingString[index].Length; i++)
+            {
+                if (solvingString[index][i] == value) return true;
+            }
+            return false;
+        }
+
+        public List<int> GetStepsList()
+        {
+            return stepList;
+        }
+
+        public void RemoveElem(int index)
+        {
+            solvingString.RemoveAt(index);
+        }
+
+        public List<string> GetString()
+        {
+            return solvingString;
+        }
+
+        public void ChangeElem(int index, string newValue)
+        {
+            solvingString[index] = newValue;
+        }
+    }
+
     public class TableSolved
     {
         private List<List<TableCell>> _table = new List<List<TableCell>>();
         private InputString inputString;
+        private SolvingString solvingString;
         private double rows;
         private int column;
 
         private Table truthTable;
-
         private bool Solve(bool x, bool y, char sign)
         {
             switch (sign)
@@ -397,30 +483,37 @@ namespace Calculator
             this.rows = rows;
             this.column = column;
             inputString = new InputString(input);
+            solvingString = new SolvingString(input);
 
-            this.truthTable = truthTable; 
+            this.truthTable = truthTable;
 
             int n = 0;
 
             _table.Add(new List<TableCell>());
 
-            for (int i = 0; i < column; i++)
+            for (int i = 0; i < solvingString.GetStepsList().Count; i++)
             {
-                int index = inputString.GetStepList(input)[i].Item2;
+                int index = solvingString.GetStepsList()[i];
                 string text;
-                if (input[index] != '¬')
+                if (!solvingString.Exist(index, '¬'))
                 {
-                    text = input[index - 1].ToString() + " " + input[index].ToString() + " " + input[index + 1].ToString();
-                } else text = input[index].ToString() + " " + input[index + 1].ToString();
+                    Console.WriteLine(solvingString.GetStepsList().Count);
+                    text = solvingString.GetString()[index - 1] + " " + solvingString.GetString()[index] + " " + solvingString.GetString()[index + 1];
+                } 
+                else
+                {
+                    text = solvingString.GetString()[index];
+                }
+
                 TableCell newButton = new TableCell(text, 0, i);
                 newButton.SetColor(0, 255, 100, 255);
                 _table[0].Add(newButton);
             }
 
-            for (int i = 1; i <= rows; i++)
+            /*for (int i = 1; i <= rows; i++)
             {
                 _table.Add(new List<TableCell>());
-
+                
                 for (int j = 0; j < column; j++)
                 {
                     int indexOfSign = inputString.GetStepList(input)[j].Item2;
@@ -444,7 +537,7 @@ namespace Calculator
                     _table[i].Add(newButton);
                 }
                 n++;
-            }
+            }*/
         }
 
         public List<Tuple<char, int>> GetStepsList(string str)
