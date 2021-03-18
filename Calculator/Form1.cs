@@ -185,7 +185,7 @@ namespace Calculator
         {
             signsAlphabet2.Add('∨');
             signsAlphabet1.Add('∧');
-            signsAlphabet1.Add('¬');
+            //signsAlphabet1.Add('¬');
             signsAlphabet2.Add('⊕');
             signsAlphabet2.Add('→');
             signsAlphabet2.Add('≡');
@@ -384,11 +384,26 @@ namespace Calculator
                 } else solvingString.Add(str[i].ToString());
             }
 
+            InitializeStepList();
+        }
+
+        public void InitializeStepList()
+        {
+            stepList = new List<int>();
+            
+            for (int i = 0; i < solvingString.Count; i++)
+            {
+                if (Exist(i, '¬') && solvingString[i].Length == 2)
+                {
+                    stepList.Add(i);
+                }
+            }
+
             for (int i = 0; i < solvingString.Count; i++)
             {
                 for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
-                    if (solvingString[i] == signsAlphabet.GetFirstAlphabet()[j].ToString() || Exist(i, signsAlphabet.GetFirstAlphabet()[j]))
+                    if ((solvingString[i] == signsAlphabet.GetFirstAlphabet()[j].ToString() || Exist(i, signsAlphabet.GetFirstAlphabet()[j])) && solvingString[i].Length == 1)
                     {
                         stepList.Add(i);
                     }
@@ -399,7 +414,7 @@ namespace Calculator
             {
                 for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
                 {
-                    if (solvingString[i] == signsAlphabet.GetSecondAlphabet()[j].ToString())
+                    if ((solvingString[i] == signsAlphabet.GetSecondAlphabet()[j].ToString()) && solvingString[i].Length == 1)
                     {
                         stepList.Add(i);
                     }
@@ -407,8 +422,21 @@ namespace Calculator
             }
         }
 
+        public void ChangeValues(int index1, int index2)
+        {
+            for (int i = index1 + 1; i <= index2; i++)
+            {
+                solvingString[index1] += " " + solvingString[i];
+            }
+
+            for (int i = index1 + 1; i <= index2; i++) solvingString.RemoveAt(index1 + 1);
+
+            InitializeStepList();
+        }
+
         public bool Exist(int index, char value)
         {
+            Console.WriteLine("Count in exists: " + solvingString.Count + " index in params: " + index);
             for (int i = 0; i < solvingString[index].Length; i++)
             {
                 if (solvingString[index][i] == value) return true;
@@ -478,6 +506,49 @@ namespace Calculator
             }
         }
 
+        public bool isExit(string s)
+        {
+            for (int i = 0; i < _table.Count; i++)
+            {
+                for (int j = 0; j < _table[i].Count; j++)
+                {
+                    if (_table[i][j].GetValue().Length <= 2)
+                    {
+                        for (int l = 0; l < _table[i][j].GetValue().Length; l++)
+                        {
+                            if (_table[i][j].GetValue()[l].ToString() == s)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public Tuple<int, int> GetPositionOfCell(string s)
+        {
+            for (int i = 0; i < _table.Count; i++)
+            {
+                for (int j = 0; j < _table[i].Count; j++)
+                {
+                    if (_table[i][j].GetValue().Length <= 2)
+                    {
+                        for (int l = 0; l < _table[i][j].GetValue().Length; l++)
+                        {
+                            if (_table[i][j].GetValue()[l].ToString() == s)
+                            {
+                                return new Tuple<int, int>(i, j);
+                            }
+                        }
+                    }
+                }
+            }
+            return new Tuple<int, int>(0, 0);
+            Console.WriteLine("I fucked up! getPositonOfCell");
+        }
+
         public TableSolved(double rows, int column, string input, Table truthTable)
         {
             this.rows = rows;
@@ -491,23 +562,41 @@ namespace Calculator
 
             _table.Add(new List<TableCell>());
 
-            for (int i = 0; i < solvingString.GetStepsList().Count; i++)
+            int steps = solvingString.GetStepsList().Count; // т.к кол-во шагов меняется динамически
+            for (int i = 0; i < steps; i++)
             {
-                int index = solvingString.GetStepsList()[i];
-                string text;
+                int index = solvingString.GetStepsList()[0]; // всегда нужно брать первое действие
+                string text = "";
+                for (int l = 0; l < solvingString.GetString().Count; l++) Console.Write(solvingString.GetString()[l] + " ");
+                for (int l = 0; l < solvingString.GetStepsList().Count; l++) Console.Write(solvingString.GetStepsList()[l] + " ");
                 if (!solvingString.Exist(index, '¬'))
                 {
-                    Console.WriteLine(solvingString.GetStepsList().Count);
-                    text = solvingString.GetString()[index - 1] + " " + solvingString.GetString()[index] + " " + solvingString.GetString()[index + 1];
+                    //text = solvingString.GetString()[index - 1] + " " + solvingString.GetString()[index] + " " + solvingString.GetString()[index + 1];
+                    if (isExit(solvingString.GetString()[index - 1])) text += _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue();
+                    else text += solvingString.GetString()[index - 1];
+
+                    text += solvingString.GetString()[index];
+
+                    if (isExit(solvingString.GetString()[index + 1])) text += _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue();
+                    else text += solvingString.GetString()[index + 1];
                 } 
                 else
                 {
                     text = solvingString.GetString()[index];
                 }
 
-                TableCell newButton = new TableCell(text, 0, i);
+                
+
+                TableCell newButton = new TableCell(text, 0, i, 120);
                 newButton.SetColor(0, 255, 100, 255);
                 _table[0].Add(newButton);
+
+                Console.WriteLine("Index in fact: " + index);
+                if (solvingString.Exist(index, '¬')) // инициализация и изменения происходят в конце, чтобы не было конфликтов
+                {
+                    solvingString.ChangeElem(index, text[1].ToString()); // костыль (но работает)}
+                    solvingString.InitializeStepList();
+                } else solvingString.ChangeValues(index - 1, index + 1);
             }
 
             /*for (int i = 1; i <= rows; i++)
@@ -641,12 +730,12 @@ namespace Calculator
     {
         public string value;
         int x, y;
-        public TableCell (string text, int x, int y)
+        public TableCell(string text, int x, int y, int width = 50, int height = 30)
         {
             Enabled = false;
             BackColor = Color.FromArgb(255, 200, 200, 200);
             Text = text;
-            Size = new Size(50, 30);
+            Size = new Size(width, height); // defult width = 50 сейчас 75!!!
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
 

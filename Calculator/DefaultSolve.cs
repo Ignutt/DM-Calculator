@@ -39,9 +39,8 @@ namespace Calculator
 
             tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), solvingString.GetStepsList().Count, str,
                 table);
-            tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 50 + 15 * solvingString.GetStepsList().Count,
+            tableOutFunc.Size = new Size(solvingString.GetStepsList().Count * 120 + 15 * solvingString.GetStepsList().Count,
                 tableOut.Size.Height);
-
             tableOutFunc.Location = tableOut.Location + new Size(tableOut.Size.Width + 2, 0);
 
 
