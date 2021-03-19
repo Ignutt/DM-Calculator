@@ -9,3 +9,7 @@ D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.exe
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.pdb
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Form1.resources
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.DefaultSolve.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.MainMenu.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.TruthTableWindow.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.DTF.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.KTF.resources

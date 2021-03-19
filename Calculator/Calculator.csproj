@@ -49,6 +49,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DTF.Designer.cs">
+      <DependentUpon>DTF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KTF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KTF.Designer.cs">
+      <DependentUpon>KTF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TruthTableWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TruthTableWindow.Designer.cs">
+      <DependentUpon>TruthTableWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="DefaultSolve.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,13 +79,31 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DTF.resx">
+      <DependentUpon>DTF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KTF.resx">
+      <DependentUpon>KTF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TruthTableWindow.resx">
+      <DependentUpon>TruthTableWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DefaultSolve.resx">
       <DependentUpon>DefaultSolve.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainMenu.resx">
+      <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

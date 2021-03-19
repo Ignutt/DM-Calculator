@@ -151,6 +151,12 @@ namespace Calculator
             DefaultSolve form = new DefaultSolve(inputField.Text);
             form.Visible = true;
         }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            MainMenu form = new MainMenu();
+            form.Visible = true;
+        }
     }
 
 
@@ -475,7 +481,6 @@ namespace Calculator
         private Table truthTable;
         private bool Solve(bool x, bool y, char sign)
         {
-            Decimal d = new decimal();
             switch (sign)
             {
                 case '∨': 
