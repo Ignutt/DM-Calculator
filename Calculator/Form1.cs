@@ -148,8 +148,16 @@ namespace Calculator
 
         private void Solve(object sender, EventArgs e)
         {
-            DefaultSolve form = new DefaultSolve(inputField.Text);
-            form.Visible = true;
+            try
+            {
+                DefaultSolve form = new DefaultSolve(inputField.Text);
+                form.Visible = true;
+                errorMessage.Visible = false;
+            }
+            catch
+            {
+                errorMessage.Visible = true;
+            }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -189,14 +197,14 @@ namespace Calculator
 
         public SignsAlphabet()
         {
-            signsAlphabet2.Add('∨');
             signsAlphabet1.Add('∧');
+            signsAlphabet2.Add('∨');
             //signsAlphabet1.Add('¬');
             signsAlphabet2.Add('⊕');
+            signsAlphabet2.Add('↑');
+            signsAlphabet2.Add('↓');
             signsAlphabet2.Add('→');
             signsAlphabet2.Add('≡');
-            signsAlphabet2.Add('↓');
-            signsAlphabet2.Add('↑');
         }
 
         public List<char> GetFirstAlphabet()
@@ -405,7 +413,7 @@ namespace Calculator
                 }
             }
 
-            for (int i = 0; i < solvingString.Count; i++)
+            /*for (int i = 0; i < solvingString.Count; i++)
             {
                 for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
@@ -423,6 +431,27 @@ namespace Calculator
                     if ((solvingString[i] == signsAlphabet.GetSecondAlphabet()[j].ToString()) && solvingString[i].Length == 1)
                     {
                         stepList.Add(i);
+                    }
+                }
+            }*/
+            for (int i = 0; i < signsAlphabet.GetFirstAlphabet().Count; i++)
+            {
+                for (int j = 0; j < solvingString.Count; j++)
+                {
+                    if ((solvingString[j] == signsAlphabet.GetFirstAlphabet()[i].ToString() || Exist(j, signsAlphabet.GetFirstAlphabet()[i])) && solvingString[j].Length == 1)
+                    {
+                        stepList.Add(j);
+                    }
+                }
+            }
+
+            for (int i = 0; i < signsAlphabet.GetSecondAlphabet().Count; i++)
+            {
+                for (int j = 0; j < solvingString.Count; j++)
+                {
+                    if ((solvingString[j] == signsAlphabet.GetSecondAlphabet()[i].ToString() || Exist(j, signsAlphabet.GetSecondAlphabet()[i])) && solvingString[j].Length == 1)
+                    {
+                        stepList.Add(j);
                     }
                 }
             }
