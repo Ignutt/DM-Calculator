@@ -56,11 +56,12 @@ namespace Calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(953, 595);
+            this.ClientSize = new System.Drawing.Size(1162, 590);
             this.Controls.Add(this.tableOutFunc);
             this.Controls.Add(this.tableOut);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "DefaultSolve";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Стандартное решение";
             this.ResumeLayout(false);
 

@@ -436,7 +436,6 @@ namespace Calculator
 
         public bool Exist(int index, char value)
         {
-            Console.WriteLine("Count in exists: " + solvingString.Count + " index in params: " + index);
             for (int i = 0; i < solvingString[index].Length; i++)
             {
                 if (solvingString[index][i] == value) return true;
@@ -476,6 +475,7 @@ namespace Calculator
         private Table truthTable;
         private bool Solve(bool x, bool y, char sign)
         {
+            Decimal d = new decimal();
             switch (sign)
             {
                 case '∨': 
@@ -490,7 +490,8 @@ namespace Calculator
                 case '⊕': 
                     return (!x&&y || x&&!y);
                     break;
-                case '→': 
+                case '→':
+                    //return (!x || y);
                     return (!x || y);
                     break;
                 case '≡': 
@@ -506,7 +507,7 @@ namespace Calculator
             }
         }
 
-        public bool isExit(string s)
+        public bool isExist(string s)
         {
             for (int i = 0; i < _table.Count; i++)
             {
@@ -562,36 +563,75 @@ namespace Calculator
 
             _table.Add(new List<TableCell>());
 
+            List<List<string>> mainStepList = new List<List<string>>(); 
             int steps = solvingString.GetStepsList().Count; // т.к кол-во шагов меняется динамически
+            int factorMinus = 0;
             for (int i = 0; i < steps; i++)
             {
+                mainStepList.Add(new List<string>());
                 int index = solvingString.GetStepsList()[0]; // всегда нужно брать первое действие
                 string text = "";
-                for (int l = 0; l < solvingString.GetString().Count; l++) Console.Write(solvingString.GetString()[l] + " ");
-                for (int l = 0; l < solvingString.GetStepsList().Count; l++) Console.Write(solvingString.GetStepsList()[l] + " ");
+
+                mainStepList[i].Add(solvingString.GetString()[index]);
+                for (int l = 0; l < 5; l++)
+                {
+                    mainStepList[i].Add("");
+                }
+
                 if (!solvingString.Exist(index, '¬'))
                 {
-                    //text = solvingString.GetString()[index - 1] + " " + solvingString.GetString()[index] + " " + solvingString.GetString()[index + 1];
-                    if (isExit(solvingString.GetString()[index - 1])) text += _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue();
-                    else text += solvingString.GetString()[index - 1];
+                    if (solvingString.GetString()[index - 1].Length == 1 && solvingString.GetString()[index + 1].Length == 1 
+                        && !isExist(solvingString.GetString()[index - 1]) && !isExist(solvingString.GetString()[index + 1]))
+                    {
+                        factorMinus++;
+                        Console.WriteLine("i am entered!");
+                    }
+                    if (isExist(solvingString.GetString()[index - 1]))
+                    {
+                        text += _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue();
+                        mainStepList[i][1] = _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue();
+                        mainStepList[i][3] = _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue().Length 
+                            >= 2 ? (i - factorMinus).ToString() : "-1";
+                    }
+                    else
+                    {
+                        text += solvingString.GetString()[index - 1];
+                        mainStepList[i][1] = solvingString.GetString()[index - 1];
+                        mainStepList[i][3] = solvingString.GetString()[index - 1].Length >= 2 ? (i - factorMinus).ToString() : "-1";
+                    }
 
                     text += solvingString.GetString()[index];
+                    mainStepList[i][0] = solvingString.GetString()[index];
 
-                    if (isExit(solvingString.GetString()[index + 1])) text += _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue();
-                    else text += solvingString.GetString()[index + 1];
+                    if (isExist(solvingString.GetString()[index + 1]))
+                    {
+                        text += _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue();
+                        mainStepList[i][2] = _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue();
+                        mainStepList[i][4] = _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue().Length 
+                            >= 2 ? (i - factorMinus).ToString() : "-1";
+                    }
+                    else
+                    {
+                        text += solvingString.GetString()[index + 1];
+                        mainStepList[i][2] = solvingString.GetString()[index + 1];
+                        mainStepList[i][4] = solvingString.GetString()[index + 1].Length >= 2 ? (i - factorMinus).ToString() : "-1";
+                    }
                 } 
                 else
                 {
                     text = solvingString.GetString()[index];
+                    mainStepList[i][0] = '¬'.ToString();
+                    mainStepList[i][1] = text[1].ToString(); // ¬a  -> a
+                    mainStepList[i][3] = i.ToString();
+                    mainStepList[i][4] = i.ToString();
+                    factorMinus++;
                 }
-
-                
+                Console.WriteLine("Index: " + index.ToString());
 
                 TableCell newButton = new TableCell(text, 0, i, 120);
                 newButton.SetColor(0, 255, 100, 255);
                 _table[0].Add(newButton);
 
-                Console.WriteLine("Index in fact: " + index);
                 if (solvingString.Exist(index, '¬')) // инициализация и изменения происходят в конце, чтобы не было конфликтов
                 {
                     solvingString.ChangeElem(index, text[1].ToString()); // костыль (но работает)}
@@ -599,34 +639,62 @@ namespace Calculator
                 } else solvingString.ChangeValues(index - 1, index + 1);
             }
 
-            /*for (int i = 1; i <= rows; i++)
+            Console.WriteLine("------------------");
+            for (int i = 0; i < mainStepList.Count; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Console.Write(mainStepList[i][j] + " ");
+                    Console.WriteLine();
+                }
+                Console.WriteLine("------------------");
+            }
+
+            for (int i = 1; i <= rows; i++)
             {
                 _table.Add(new List<TableCell>());
                 
                 for (int j = 0; j < column; j++)
                 {
-                    int indexOfSign = inputString.GetStepList(input)[j].Item2;
                     string word1 = "1";
                     string word2 = "1";
                     string text = "";
-                    if (input[indexOfSign] != '¬')
+                    if (mainStepList[j][0] != "¬")
                     {
-                        word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign - 1])).Text;
-                        word2 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign + 1])).Text;
-                        text = Solve(int.Parse(word1) != 0, int.Parse(word2) != 0, inputString.GetStepList(input)[j].Item1) ? "1" : "0";
-                    } else
+                        if (mainStepList[j][1].Length == 1)
+                        {
+                            word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(Convert.ToChar(mainStepList[j][1]))).GetValue();
+                        }
+                        else
+                        {
+                            Console.WriteLine("mainStepList[j][1] : " + mainStepList[j][1]);
+                            word1 = _table[i][int.Parse(mainStepList[j][3])].GetValue();    
+                        } 
+
+                        if (mainStepList[j][2].Length == 1)
+                        {
+                            word2 = truthTable.GetCell(i, truthTable.GetVariableIndex(Convert.ToChar(mainStepList[j][2]))).GetValue();
+                        }
+                        else
+                        {
+                            Console.WriteLine("J: " + j);
+                            word2 = _table[i][int.Parse(mainStepList[j][4])].GetValue();
+                        }
+                        text = Solve(word1 != "0", word2 != "0", Convert.ToChar(mainStepList[j][0])) ? "1" : "0";
+                    }
+                    else
                     {
-                        word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(input[indexOfSign + 1])).Text;
-                        text = Solve(int.Parse(word1) != 0, int.Parse(word2) != 0, inputString.GetStepList(input)[j].Item1) ? "1" : "0";
+                        word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(Convert.ToChar(mainStepList[j][1]))).GetValue();
+                        text = Solve(word1 != "0", word2 != "0", '¬') ? "1" : "0";
                     }
 
 
-                    TableCell newButton = new TableCell(text, j, i);
+                    TableCell newButton = new TableCell(text, j, i, 120);
 
                     _table[i].Add(newButton);
                 }
                 n++;
-            }*/
+            }
         }
 
         public List<Tuple<char, int>> GetStepsList(string str)

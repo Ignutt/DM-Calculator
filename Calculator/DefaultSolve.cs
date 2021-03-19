@@ -57,7 +57,7 @@ namespace Calculator
                 }
             }
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < tableSolved.GetRows() + 1; i++)
             {
                 for (int j = 0; j < tableSolved.GetColumns(); j++)
                 {
