@@ -148,7 +148,7 @@ namespace Calculator
 
         private void Solve(object sender, EventArgs e)
         {
-            try
+            /*try
             {
                 DefaultSolve form = new DefaultSolve(inputField.Text);
                 form.Visible = true;
@@ -157,7 +157,9 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }
+            }*/
+            DefaultSolve form = new DefaultSolve(inputField.Text);
+            form.Visible = true;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -387,15 +389,47 @@ namespace Calculator
         private List<int> stepList = new List<int>();
         private SignsAlphabet signsAlphabet = new SignsAlphabet();
 
+        private List<Tuple<int, int>> scopes = new List<Tuple<int, int>>();
+
+        private void GenerateScopeArray(string str)
+        {
+            scopes = new List<Tuple<int, int>>();
+            List<int> indexesOpen = new List<int>();
+            if (str.Contains("(") || str.Contains(")"))
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (str[i] == '(')
+                    {
+                        indexesOpen.Add(i);
+                    }
+                    else if (str[i] == ')')
+                    {
+                        scopes.Add(new Tuple<int,int>(indexesOpen[indexesOpen.Count - 1], i));
+                        indexesOpen.RemoveAt(indexesOpen.Count - 1);
+                    }
+                }
+
+            for (int i = 0; i < scopes.Count; i++)
+            {
+                Console.WriteLine("Item1: " + scopes[i].Item1 + " Item2: " + scopes[i].Item2 + " i: " + i);
+            }
+            Console.WriteLine();
+        }
+
         public SolvingString(string str)
         {
-            for (int i = 0; i < str.Length; i++)
+            GenerateScopeArray(str);
+            if (!str.Contains(")") || !str.Contains("("))
             {
-                if (str[i] == '¬')
+                for (int i = 0; i < str.Length; i++)
                 {
-                    solvingString.Add(str[i].ToString() + str[i + 1]);
-                    i++;
-                } else solvingString.Add(str[i].ToString());
+                    if (str[i] == '¬')
+                    {
+                        solvingString.Add(str[i].ToString() + str[i + 1]);
+                        i++;
+                    }
+                    else solvingString.Add(str[i].ToString());
+                }
             }
 
             InitializeStepList();
@@ -404,7 +438,7 @@ namespace Calculator
         public void InitializeStepList()
         {
             stepList = new List<int>();
-            
+
             for (int i = 0; i < solvingString.Count; i++)
             {
                 if (Exist(i, '¬') && solvingString[i].Length == 2)
@@ -413,27 +447,6 @@ namespace Calculator
                 }
             }
 
-            /*for (int i = 0; i < solvingString.Count; i++)
-            {
-                for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
-                {
-                    if ((solvingString[i] == signsAlphabet.GetFirstAlphabet()[j].ToString() || Exist(i, signsAlphabet.GetFirstAlphabet()[j])) && solvingString[i].Length == 1)
-                    {
-                        stepList.Add(i);
-                    }
-                }
-            }
-
-            for (int i = 0; i < solvingString.Count; i++)
-            {
-                for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
-                {
-                    if ((solvingString[i] == signsAlphabet.GetSecondAlphabet()[j].ToString()) && solvingString[i].Length == 1)
-                    {
-                        stepList.Add(i);
-                    }
-                }
-            }*/
             for (int i = 0; i < signsAlphabet.GetFirstAlphabet().Count; i++)
             {
                 for (int j = 0; j < solvingString.Count; j++)
@@ -660,7 +673,7 @@ namespace Calculator
                     mainStepList[i][4] = i.ToString();
                     factorMinus++;
                 }
-                Console.WriteLine("Index: " + index.ToString());
+                //Console.WriteLine("Index: " + index.ToString());
 
                 TableCell newButton = new TableCell(text, 0, i, 120);
                 newButton.SetColor(0, 255, 100, 255);
@@ -673,7 +686,7 @@ namespace Calculator
                 } else solvingString.ChangeValues(index - 1, index + 1);
             }
 
-            Console.WriteLine("------------------");
+           /* Console.WriteLine("------------------");
             for (int i = 0; i < mainStepList.Count; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -682,7 +695,7 @@ namespace Calculator
                     Console.WriteLine();
                 }
                 Console.WriteLine("------------------");
-            }
+            }*/
 
             for (int i = 1; i <= rows; i++)
             {
