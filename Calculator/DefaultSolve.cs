@@ -36,10 +36,10 @@ namespace Calculator
             tableOut.Size = new Size(inputString.GetVariablesCount(str) * 50 + 15 * inputString.GetVariablesCount(str), 
                 tableOut.Size.Height);
 
-
-            tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), solvingString.GetStepsList().Count, str,
+            Console.WriteLine("DEFAULT SOLVE: " + inputString.GetVariablesCount(str) + " " + inputString.GetStepsCount(str));
+            tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetStepsCount(str), str,
                 table);
-            tableOutFunc.Size = new Size(solvingString.GetStepsList().Count * 120 + 15 * solvingString.GetStepsList().Count,
+            tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 120 + 15 * inputString.GetStepsCount(str),
                 tableOut.Size.Height);
             tableOutFunc.Location = tableOut.Location + new Size(tableOut.Size.Width + 2, 0);
 
@@ -57,10 +57,11 @@ namespace Calculator
                 }
             }
 
-            for (int i = 0; i < tableSolved.GetRows() + 1; i++)
+            for (int i = 0; i < 1; i++)
             {
                 for (int j = 0; j < tableSolved.GetColumns(); j++)
                 {
+                    Console.WriteLine(tableSolved.GetCell(i, j).GetValue());
                     tableOutFunc.Controls.Add(tableSolved.GetCell(i, j));
                 }
             }

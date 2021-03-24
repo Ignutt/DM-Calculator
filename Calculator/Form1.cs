@@ -192,46 +192,72 @@ namespace Calculator
         }
     }
 
+    public class Sign {
+        private string value = "+";
+        private int priory = 0;
+
+        public Sign(string value, int priory)
+        {
+            this.value = value;
+            this.priory = priory;
+        }
+
+        public int GetPriority()
+        {
+            return priory;
+        }
+
+        public string GetValue()
+        {
+            return value;
+        }
+    }
+
     public class SignsAlphabet
     {
-        private List<char> signsAlphabet1 = new List<char>();
-        private List<char> signsAlphabet2 = new List<char>();
+        private List<Sign> signsAlphabet = new List<Sign>();
 
         public SignsAlphabet()
         {
-            signsAlphabet1.Add('∧');
-            signsAlphabet2.Add('∨');
-            //signsAlphabet1.Add('¬');
-            signsAlphabet2.Add('⊕');
-            signsAlphabet2.Add('↑');
-            signsAlphabet2.Add('↓');
-            signsAlphabet2.Add('→');
-            signsAlphabet2.Add('≡');
+            signsAlphabet.Add(new Sign("¬", 8));
+            signsAlphabet.Add(new Sign("∧", 7));
+            signsAlphabet.Add(new Sign("∨", 6));
+            signsAlphabet.Add(new Sign("⊕", 5));
+            signsAlphabet.Add(new Sign("↑", 4));
+            signsAlphabet.Add(new Sign("↓", 3));
+            signsAlphabet.Add(new Sign("→", 2));
+            signsAlphabet.Add(new Sign("≡", 1));
+            //signsAlphabet.Add(new Sign("(", -100));
+            //signsAlphabet.Add(new Sign(")", -100));
         }
 
-        public List<char> GetFirstAlphabet()
+        public List<Sign> GetFirstAlphabet()
         {
-            return signsAlphabet1;
+            return signsAlphabet;
         }
 
-        public bool isSign(char sign)
+        public int GetSignPriority(string val)
         {
-            for (int i = 0; i < signsAlphabet1.Count; i++)
+            for (int i = 0; i < signsAlphabet.Count; i++)
             {
-                if (sign == signsAlphabet1[i]) return true;
+                if (val == signsAlphabet[i].GetValue()) return signsAlphabet[i].GetPriority();
+            }
+            return -1;
+        }
+
+        public bool isSign(string sign)
+        {
+            for (int i = 0; i < signsAlphabet.Count; i++)
+            {
+                if (sign == signsAlphabet[i].GetValue()) return true;
             }
 
-            for (int i = 0; i < signsAlphabet2.Count; i++)
+            for (int i = 0; i < signsAlphabet.Count; i++)
             {
-                if (sign == signsAlphabet2[i]) return true;
+                if (sign == signsAlphabet[i].GetValue()) return true;
             }
 
             return false;
-        }
-
-        public List<char> GetSecondAlphabet()
-        {
-            return signsAlphabet2;
         }
     }
 
@@ -265,20 +291,20 @@ namespace Calculator
             {
                 for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
-                    if (inputField[i] == signsAlphabet.GetFirstAlphabet()[j])
+                    if (inputField[i].ToString() == signsAlphabet.GetFirstAlphabet()[j].GetValue())
                     {
-                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetFirstAlphabet()[j], i));
+                        stepList.Add(new Tuple<char, int>(Convert.ToChar(signsAlphabet.GetFirstAlphabet()[j].GetValue()), i));
                     }
                 }
             }
 
             for (int i = 0; i < inputField.Length; i++)
             {
-                for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
+                for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
-                    if (inputField[i] == signsAlphabet.GetSecondAlphabet()[j])
+                    if (inputField[i].ToString() == signsAlphabet.GetFirstAlphabet()[j].GetValue())
                     {
-                        stepList.Add(new Tuple<char, int>(signsAlphabet.GetSecondAlphabet()[j], i));
+                        stepList.Add(new Tuple<char, int>(Convert.ToChar(signsAlphabet.GetFirstAlphabet()[j].GetValue()), i));
                     }
                 }
             }
@@ -315,15 +341,7 @@ namespace Calculator
             {
                 for (int j = 0; j < signsAlphabet.GetFirstAlphabet().Count; j++)
                 {
-                    if (inputField[i] == signsAlphabet.GetFirstAlphabet()[j])
-                    {
-                        res++;
-                    }
-                }
-
-                for (int j = 0; j < signsAlphabet.GetSecondAlphabet().Count; j++)
-                {
-                    if (inputField[i] == signsAlphabet.GetSecondAlphabet()[j])
+                    if (inputField[i].ToString() == signsAlphabet.GetFirstAlphabet()[j].GetValue())
                     {
                         res++;
                     }
@@ -404,7 +422,7 @@ namespace Calculator
                     }
                     else if (str[i] == ')')
                     {
-                        scopes.Add(new Tuple<int,int>(indexesOpen[indexesOpen.Count - 1], i));
+                        scopes.Add(new Tuple<int, int>(indexesOpen[indexesOpen.Count - 1], i));
                         indexesOpen.RemoveAt(indexesOpen.Count - 1);
                     }
                 }
@@ -413,7 +431,6 @@ namespace Calculator
             {
                 Console.WriteLine("Item1: " + scopes[i].Item1 + " Item2: " + scopes[i].Item2 + " i: " + i);
             }
-            Console.WriteLine();
         }
 
         public SolvingString(string str)
@@ -451,18 +468,7 @@ namespace Calculator
             {
                 for (int j = 0; j < solvingString.Count; j++)
                 {
-                    if ((solvingString[j] == signsAlphabet.GetFirstAlphabet()[i].ToString() || Exist(j, signsAlphabet.GetFirstAlphabet()[i])) && solvingString[j].Length == 1)
-                    {
-                        stepList.Add(j);
-                    }
-                }
-            }
-
-            for (int i = 0; i < signsAlphabet.GetSecondAlphabet().Count; i++)
-            {
-                for (int j = 0; j < solvingString.Count; j++)
-                {
-                    if ((solvingString[j] == signsAlphabet.GetSecondAlphabet()[i].ToString() || Exist(j, signsAlphabet.GetSecondAlphabet()[i])) && solvingString[j].Length == 1)
+                    if ((solvingString[j] == signsAlphabet.GetFirstAlphabet()[i].ToString() || Exist(j, Convert.ToChar(signsAlphabet.GetFirstAlphabet()[i].GetValue()))) && solvingString[j].Length == 1)
                     {
                         stepList.Add(j);
                     }
@@ -516,7 +522,7 @@ namespace Calculator
     {
         private List<List<TableCell>> _table = new List<List<TableCell>>();
         private InputString inputString;
-        private SolvingString solvingString;
+        private SignsAlphabet signsAlphabet = new SignsAlphabet();
         private double rows;
         private int column;
 
@@ -538,7 +544,6 @@ namespace Calculator
                     return (!x&&y || x&&!y);
                     break;
                 case '→':
-                    //return (!x || y);
                     return (!x || y);
                     break;
                 case '≡': 
@@ -597,12 +602,18 @@ namespace Calculator
             Console.WriteLine("I fucked up! getPositonOfCell");
         }
 
+        private string ReverseString(string s)
+        {
+            char[] arr = s.ToCharArray();
+            Array.Reverse(arr);
+            return new string(arr);
+        }
+
         public TableSolved(double rows, int column, string input, Table truthTable)
         {
             this.rows = rows;
             this.column = column;
             inputString = new InputString(input);
-            solvingString = new SolvingString(input);
 
             this.truthTable = truthTable;
 
@@ -610,137 +621,110 @@ namespace Calculator
 
             _table.Add(new List<TableCell>());
 
-            List<List<string>> mainStepList = new List<List<string>>(); 
-            int steps = solvingString.GetStepsList().Count; // т.к кол-во шагов меняется динамически
-            int factorMinus = 0;
-            for (int i = 0; i < steps; i++)
+            //HEADER
+            List<string> vars = new List<string>();
+            List<Sign> signs = new List<Sign>();
+            for (int i = 0; i < input.Length; i++)
             {
-                mainStepList.Add(new List<string>());
-                int index = solvingString.GetStepsList()[0]; // всегда нужно брать первое действие
-                string text = "";
-
-                mainStepList[i].Add(solvingString.GetString()[index]);
-                for (int l = 0; l < 5; l++)
+                if (signsAlphabet.isSign(input[i].ToString()) || input[i] == ')' || input[i] == '(')
                 {
-                    mainStepList[i].Add("");
+                    if (signs.Count > 0)
+                    {
+                        // проверка на скобки
+                        if (input[i] == '(')
+                        {
+                            signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                            Console.WriteLine("New Value: " + i);
+                        }
+                        else if (input[i] == ')')
+                        {
+                            while (signs[signs.Count - 1].GetValue() != "(")
+                            {
+                                string newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                                vars.RemoveAt(vars.Count - 1);
+                                vars.RemoveAt(vars.Count - 1);
+                                signs.RemoveAt(signs.Count - 1);
+                                vars.Add(newValue);
+
+                                TableCell newButton = new TableCell(newValue, 0, i, 120);
+                                newButton.SetColor(0, 255, 100, 255);
+                                _table[0].Add(newButton);
+                                Console.WriteLine("New Value: " + newValue + " " + vars.Count);
+
+                            }
+
+                            signs.RemoveAt(signs.Count - 1);
+                        }
+                        // работа без скобок
+                        else if (signs[signs.Count - 1].GetPriority() < signsAlphabet.GetSignPriority(input[i].ToString()) &&
+                                signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                        {
+                            signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                        }
+                        else
+                        {
+                            while (signs[signs.Count - 1].GetPriority() >= signsAlphabet.GetSignPriority(input[i].ToString()) && 
+                                signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                            {
+                                string newValue = "";
+                                if (signs[signs.Count - 1].GetValue() != "¬")
+                                {
+                                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                                    vars.RemoveAt(vars.Count - 1);
+                                    vars.RemoveAt(vars.Count - 1);
+                                    signs.RemoveAt(signs.Count - 1);
+                                } else
+                                {
+                                    newValue = signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                                    vars.RemoveAt(vars.Count - 1);
+                                    signs.RemoveAt(signs.Count - 1);
+                                }
+                                vars.Add(newValue);
+
+                                TableCell newButton = new TableCell(newValue, 0, i, 120);
+                                newButton.SetColor(0, 255, 100, 255);
+                                _table[0].Add(newButton);
+
+                                if (signs.Count == 0)
+                                {
+                                    break;
+                                }
+                            } 
+                            signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                        }
+                    }
+                    else
+                    {
+                        signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                    }
                 }
-
-                if (!solvingString.Exist(index, '¬'))
-                {
-                    if (solvingString.GetString()[index - 1].Length == 1 && solvingString.GetString()[index + 1].Length == 1 
-                        && !isExist(solvingString.GetString()[index - 1]) && !isExist(solvingString.GetString()[index + 1]))
-                    {
-                        factorMinus++;
-                        Console.WriteLine("i am entered!");
-                    }
-                    if (isExist(solvingString.GetString()[index - 1]))
-                    {
-                        text += _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue();
-                        mainStepList[i][1] = _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue();
-                        mainStepList[i][3] = _table[GetPositionOfCell(solvingString.GetString()[index - 1]).Item1][GetPositionOfCell(solvingString.GetString()[index - 1]).Item2].GetValue().Length 
-                            >= 2 ? (i - factorMinus).ToString() : "-1";
-                    }
-                    else
-                    {
-                        text += solvingString.GetString()[index - 1];
-                        mainStepList[i][1] = solvingString.GetString()[index - 1];
-                        mainStepList[i][3] = solvingString.GetString()[index - 1].Length >= 2 ? (i - factorMinus).ToString() : "-1";
-                    }
-
-                    text += solvingString.GetString()[index];
-                    mainStepList[i][0] = solvingString.GetString()[index];
-
-                    if (isExist(solvingString.GetString()[index + 1]))
-                    {
-                        text += _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue();
-                        mainStepList[i][2] = _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue();
-                        mainStepList[i][4] = _table[GetPositionOfCell(solvingString.GetString()[index + 1]).Item1][GetPositionOfCell(solvingString.GetString()[index + 1]).Item2].GetValue().Length 
-                            >= 2 ? (i - factorMinus).ToString() : "-1";
-                    }
-                    else
-                    {
-                        text += solvingString.GetString()[index + 1];
-                        mainStepList[i][2] = solvingString.GetString()[index + 1];
-                        mainStepList[i][4] = solvingString.GetString()[index + 1].Length >= 2 ? (i - factorMinus).ToString() : "-1";
-                    }
-                } 
                 else
                 {
-                    text = solvingString.GetString()[index];
-                    mainStepList[i][0] = '¬'.ToString();
-                    mainStepList[i][1] = text[1].ToString(); // ¬a  -> a
-                    mainStepList[i][3] = i.ToString();
-                    mainStepList[i][4] = i.ToString();
-                    factorMinus++;
+                    vars.Add(input[i].ToString());
                 }
-                //Console.WriteLine("Index: " + index.ToString());
-
-                TableCell newButton = new TableCell(text, 0, i, 120);
-                newButton.SetColor(0, 255, 100, 255);
-                _table[0].Add(newButton);
-
-                if (solvingString.Exist(index, '¬')) // инициализация и изменения происходят в конце, чтобы не было конфликтов
-                {
-                    solvingString.ChangeElem(index, text[1].ToString()); // костыль (но работает)}
-                    solvingString.InitializeStepList();
-                } else solvingString.ChangeValues(index - 1, index + 1);
             }
 
-           /* Console.WriteLine("------------------");
-            for (int i = 0; i < mainStepList.Count; i++)
+            while (signs.Count != 0)
             {
-                for (int j = 0; j < 5; j++)
+                string newValue = "";
+                if (signs[signs.Count - 1].GetValue() != "¬")
                 {
-                    Console.Write(mainStepList[i][j] + " ");
-                    Console.WriteLine();
+                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                    vars.RemoveAt(vars.Count - 1);
+                    vars.RemoveAt(vars.Count - 1);
+                    signs.RemoveAt(signs.Count - 1);
                 }
-                Console.WriteLine("------------------");
-            }*/
-
-            for (int i = 1; i <= rows; i++)
-            {
-                _table.Add(new List<TableCell>());
-                
-                for (int j = 0; j < column; j++)
+                else
                 {
-                    string word1 = "1";
-                    string word2 = "1";
-                    string text = "";
-                    if (mainStepList[j][0] != "¬")
-                    {
-                        if (mainStepList[j][1].Length == 1)
-                        {
-                            word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(Convert.ToChar(mainStepList[j][1]))).GetValue();
-                        }
-                        else
-                        {
-                            Console.WriteLine("mainStepList[j][1] : " + mainStepList[j][1]);
-                            word1 = _table[i][int.Parse(mainStepList[j][3])].GetValue();    
-                        } 
-
-                        if (mainStepList[j][2].Length == 1)
-                        {
-                            word2 = truthTable.GetCell(i, truthTable.GetVariableIndex(Convert.ToChar(mainStepList[j][2]))).GetValue();
-                        }
-                        else
-                        {
-                            Console.WriteLine("J: " + j);
-                            word2 = _table[i][int.Parse(mainStepList[j][4])].GetValue();
-                        }
-                        text = Solve(word1 != "0", word2 != "0", Convert.ToChar(mainStepList[j][0])) ? "1" : "0";
-                    }
-                    else
-                    {
-                        word1 = truthTable.GetCell(i, truthTable.GetVariableIndex(Convert.ToChar(mainStepList[j][1]))).GetValue();
-                        text = Solve(word1 != "0", word2 != "0", '¬') ? "1" : "0";
-                    }
-
-
-                    TableCell newButton = new TableCell(text, j, i, 120);
-
-                    _table[i].Add(newButton);
+                    newValue = signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                    vars.RemoveAt(vars.Count - 1);
+                    signs.RemoveAt(signs.Count - 1);
                 }
-                n++;
+                vars.Add(newValue);
+
+                TableCell newButton = new TableCell(newValue, 0, 0, 120);
+                newButton.SetColor(0, 255, 100, 255);
+                _table[0].Add(newButton);
             }
         }
 
