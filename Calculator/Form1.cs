@@ -640,10 +640,21 @@ namespace Calculator
                         {
                             while (signs[signs.Count - 1].GetValue() != "(")
                             {
-                                string newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
-                                vars.RemoveAt(vars.Count - 1);
-                                vars.RemoveAt(vars.Count - 1);
-                                signs.RemoveAt(signs.Count - 1);
+                                string newValue = "";
+                                if (signs[signs.Count - 1].GetValue() != "¬")
+                                {
+                                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                                    newValue = "(" + newValue + ")";
+                                    vars.RemoveAt(vars.Count - 1);
+                                    vars.RemoveAt(vars.Count - 1);
+                                    signs.RemoveAt(signs.Count - 1);
+                                }
+                                else
+                                {
+                                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
+                                    vars.RemoveAt(vars.Count - 1);
+                                    signs.RemoveAt(signs.Count - 1);
+                                }
                                 vars.Add(newValue);
 
                                 TableCell newButton = new TableCell(newValue, 0, i, 120);
@@ -675,7 +686,7 @@ namespace Calculator
                                     signs.RemoveAt(signs.Count - 1);
                                 } else
                                 {
-                                    newValue = signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
                                     vars.RemoveAt(vars.Count - 1);
                                     signs.RemoveAt(signs.Count - 1);
                                 }
@@ -716,7 +727,91 @@ namespace Calculator
                 }
                 else
                 {
-                    newValue = signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
+                    vars.RemoveAt(vars.Count - 1);
+                    signs.RemoveAt(signs.Count - 1);
+                }
+                vars.Add(newValue);
+
+                TableCell newButton = new TableCell(newValue, 0, 0, 120);
+                newButton.SetColor(0, 255, 100, 255);
+                _table[0].Add(newButton);
+            }
+
+            //MAINPART
+            vars = new List<string>();
+            signs = new List<Sign>();
+
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (signsAlphabet.isSign(input[i].ToString()) || input[i] == ')' || input[i] == '(')
+                {
+                    if (signs.Count > 0)
+                    {
+                        // работа без скобок
+                        if (signs[signs.Count - 1].GetPriority() < signsAlphabet.GetSignPriority(input[i].ToString()) &&
+                                signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                        {
+                            signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                        }
+                        else
+                        {
+                            while (signs[signs.Count - 1].GetPriority() >= signsAlphabet.GetSignPriority(input[i].ToString()) && 
+                                signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                            {
+                                string newValue = "";
+                                if (signs[signs.Count - 1].GetValue() != "¬")
+                                {
+
+                                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                                    vars.RemoveAt(vars.Count - 1);
+                                    vars.RemoveAt(vars.Count - 1);
+                                    signs.RemoveAt(signs.Count - 1);
+                                } else
+                                {
+                                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
+                                    vars.RemoveAt(vars.Count - 1);
+                                    signs.RemoveAt(signs.Count - 1);
+                                }
+                                vars.Add(newValue);
+
+                                TableCell newButton = new TableCell(newValue, 0, i, 120);
+                                newButton.SetColor(0, 255, 100, 255);
+                                _table[0].Add(newButton);
+
+                                if (signs.Count == 0)
+                                {
+                                    break;
+                                }
+                            } 
+                            signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                        }
+                    }
+                    else
+                    {
+                        signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                    }
+                }
+                else
+                {
+                    vars.Add(input[i].ToString());
+                }
+            }
+
+            while (signs.Count != 0)
+            {
+                string newValue = "";
+                if (signs[signs.Count - 1].GetValue() != "¬")
+                {
+                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
+                    vars.RemoveAt(vars.Count - 1);
+                    vars.RemoveAt(vars.Count - 1);
+                    signs.RemoveAt(signs.Count - 1);
+                }
+                else
+                {
+                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
                     vars.RemoveAt(vars.Count - 1);
                     signs.RemoveAt(signs.Count - 1);
                 }
