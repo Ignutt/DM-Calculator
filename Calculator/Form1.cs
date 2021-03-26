@@ -634,7 +634,6 @@ namespace Calculator
                         if (input[i] == '(')
                         {
                             signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
-                            Console.WriteLine("New Value: " + i);
                         }
                         else if (input[i] == ')')
                         {
@@ -660,7 +659,6 @@ namespace Calculator
                                 TableCell newButton = new TableCell(newValue, 0, i, 120);
                                 newButton.SetColor(0, 255, 100, 255);
                                 _table[0].Add(newButton);
-                                Console.WriteLine("New Value: " + newValue + " " + vars.Count);
 
                             }
 
@@ -742,84 +740,164 @@ namespace Calculator
             vars = new List<string>();
             signs = new List<Sign>();
 
-
-            for (int i = 0; i < input.Length; i++)
+            int heigh = 1;
+            for (int l = 1; l < rows + 1; l++)
             {
-                if (signsAlphabet.isSign(input[i].ToString()) || input[i] == ')' || input[i] == '(')
+                _table.Add(new List<TableCell>());
+                for (int i = 0; i < input.Length; i++)
                 {
-                    if (signs.Count > 0)
+                    if (signsAlphabet.isSign(input[i].ToString()) || input[i] == ')' || input[i] == '(')
                     {
-                        // работа без скобок
-                        if (signs[signs.Count - 1].GetPriority() < signsAlphabet.GetSignPriority(input[i].ToString()) &&
-                                signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                        if (signs.Count > 0)
                         {
-                            signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                            // проверка на скобки
+                            if (input[i] == '(')
+                            {
+                                signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                            }
+                            else if (input[i] == ')')
+                            {
+                                while (signs[signs.Count - 1].GetValue() != "(")
+                                {
+                                    string newValue = "";
+                                    if (signs[signs.Count - 1].GetValue() != "¬")
+                                    {
+                                        string val1 = vars[vars.Count - 2] == "0" || vars[vars.Count - 2] == "1"
+                                                    ? vars[vars.Count - 2]
+                                                    : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 2]))).GetValue();
+
+                                        string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
+                                            ? vars[vars.Count - 1]
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+
+                                        newValue = Solve(val1 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
+
+                                        vars.RemoveAt(vars.Count - 1);
+                                        vars.RemoveAt(vars.Count - 1);
+                                        signs.RemoveAt(signs.Count - 1);
+                                    }
+                                    else
+                                    {
+                                        string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
+                                            ? vars[vars.Count - 1]
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+
+                                        newValue = Solve(val2 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
+
+                                        vars.RemoveAt(vars.Count - 1);
+                                        signs.RemoveAt(signs.Count - 1);
+                                    }
+                                    vars.Add(newValue);
+
+                                    TableCell newButton = new TableCell(newValue, l, i, 120);
+                                    newButton.SetColor(255, 200, 200, 200);
+                                    _table[l].Add(newButton);
+
+                                }
+
+                                signs.RemoveAt(signs.Count - 1);
+                            }
+                            // работа без скобок
+                            else if (signs[signs.Count - 1].GetPriority() < signsAlphabet.GetSignPriority(input[i].ToString()) &&
+                                    signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                            {
+                                signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                            }
+                            else
+                            {
+                                while (signs[signs.Count - 1].GetPriority() >= signsAlphabet.GetSignPriority(input[i].ToString()) &&
+                                    signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
+                                {
+                                    string newValue = "";
+                                    if (signs[signs.Count - 1].GetValue() != "¬")
+                                    {
+                                        string val1 = vars[vars.Count - 2] == "0" || vars[vars.Count - 2] == "1"
+                                                    ? vars[vars.Count - 2]
+                                                    : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 2]))).GetValue();
+
+                                        string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
+                                            ? vars[vars.Count - 1]
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+
+                                        newValue = Solve(val1 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
+
+                                        vars.RemoveAt(vars.Count - 1);
+                                        vars.RemoveAt(vars.Count - 1);
+                                        signs.RemoveAt(signs.Count - 1);
+                                    }
+                                    else
+                                    {
+                                        string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
+                                            ? vars[vars.Count - 1]
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+
+                                        newValue = Solve(val2 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
+                                        vars.RemoveAt(vars.Count - 1);
+                                        signs.RemoveAt(signs.Count - 1);
+                                    }
+                                    vars.Add(newValue);
+
+                                    TableCell newButton = new TableCell(newValue, l, i, 120);
+                                    newButton.SetColor(255, 200, 200, 200);
+                                    _table[l].Add(newButton);
+
+                                    if (signs.Count == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                            }
                         }
                         else
                         {
-                            while (signs[signs.Count - 1].GetPriority() >= signsAlphabet.GetSignPriority(input[i].ToString()) && 
-                                signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
-                            {
-                                string newValue = "";
-                                if (signs[signs.Count - 1].GetValue() != "¬")
-                                {
-
-                                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
-                                    vars.RemoveAt(vars.Count - 1);
-                                    vars.RemoveAt(vars.Count - 1);
-                                    signs.RemoveAt(signs.Count - 1);
-                                } else
-                                {
-                                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
-                                    vars.RemoveAt(vars.Count - 1);
-                                    signs.RemoveAt(signs.Count - 1);
-                                }
-                                vars.Add(newValue);
-
-                                TableCell newButton = new TableCell(newValue, 0, i, 120);
-                                newButton.SetColor(0, 255, 100, 255);
-                                _table[0].Add(newButton);
-
-                                if (signs.Count == 0)
-                                {
-                                    break;
-                                }
-                            } 
                             signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
                         }
                     }
                     else
                     {
-                        signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+                        vars.Add(input[i].ToString());
                     }
+                    Console.WriteLine("Variables count: " + vars.Count);
                 }
-                else
-                {
-                    vars.Add(input[i].ToString());
-                }
-            }
 
-            while (signs.Count != 0)
-            {
-                string newValue = "";
-                if (signs[signs.Count - 1].GetValue() != "¬")
+                Console.WriteLine("Last var is: " + vars[0]);
+                while (signs.Count != 0 && vars.Count > 1)
                 {
-                    newValue = vars[vars.Count - 2] + signs[signs.Count - 1].GetValue() + vars[vars.Count - 1];
-                    vars.RemoveAt(vars.Count - 1);
-                    vars.RemoveAt(vars.Count - 1);
-                    signs.RemoveAt(signs.Count - 1);
-                }
-                else
-                {
-                    newValue = signs[signs.Count - 1].GetValue() + " " + vars[vars.Count - 1];
-                    vars.RemoveAt(vars.Count - 1);
-                    signs.RemoveAt(signs.Count - 1);
-                }
-                vars.Add(newValue);
+                    string newValue = "";
+                    if (signs[signs.Count - 1].GetValue() != "¬")
+                    {
+                        string val1 = vars[vars.Count - 2] == "0" || vars[vars.Count - 2] == "1"
+                            ? vars[vars.Count - 2]
+                        : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 2]))).GetValue();
 
-                TableCell newButton = new TableCell(newValue, 0, 0, 120);
-                newButton.SetColor(0, 255, 100, 255);
-                _table[0].Add(newButton);
+                        string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
+                            ? vars[vars.Count - 1]
+                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+
+                        newValue = Solve(val1 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
+
+                        vars.RemoveAt(vars.Count - 1);
+                        vars.RemoveAt(vars.Count - 1);
+                        signs.RemoveAt(signs.Count - 1);
+                    }
+                    else
+                    {
+                        string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
+                            ? vars[vars.Count - 1]
+                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+
+                        newValue = Solve(val2 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
+                        vars.RemoveAt(vars.Count - 1);
+                        signs.RemoveAt(signs.Count - 1);
+                    }
+                    vars.Add(newValue);
+
+                    Console.WriteLine("new value is equal: " + newValue);
+                    TableCell newButton = new TableCell(newValue, l, l, 120);
+                    newButton.SetColor(255, 200, 200, 200);
+                    _table[l].Add(newButton);
+                }
             }
         }
 
