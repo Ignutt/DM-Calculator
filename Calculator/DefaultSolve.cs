@@ -36,7 +36,6 @@ namespace Calculator
             tableOut.Size = new Size(inputString.GetVariablesCount(str) * 50 + 15 * inputString.GetVariablesCount(str), 
                 tableOut.Size.Height);
 
-            Console.WriteLine("DEFAULT SOLVE: " + inputString.GetVariablesCount(str) + " " + inputString.GetStepsCount(str));
             tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetStepsCount(str), str,
                 table);
             tableOutFunc.Size = new Size(inputString.GetStepsCount(str) * 120 + 15 * inputString.GetStepsCount(str),

@@ -56,6 +56,8 @@ namespace Calculator
             this.buttonOpenScope = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.errorMessage = new System.Windows.Forms.Label();
+            this.SdnfButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // inputField
@@ -334,11 +336,11 @@ namespace Calculator
             // 
             this.button1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(218, 342);
+            this.button1.Location = new System.Drawing.Point(203, 352);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(98, 40);
+            this.button1.Size = new System.Drawing.Size(145, 40);
             this.button1.TabIndex = 33;
-            this.button1.Text = "Решить";
+            this.button1.Text = "Стандартное";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Solve);
             // 
@@ -354,11 +356,35 @@ namespace Calculator
             this.errorMessage.Text = "Данные введены неправльно";
             this.errorMessage.Visible = false;
             // 
+            // SdnfButton
+            // 
+            this.SdnfButton.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.SdnfButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SdnfButton.Location = new System.Drawing.Point(203, 398);
+            this.SdnfButton.Name = "SdnfButton";
+            this.SdnfButton.Size = new System.Drawing.Size(145, 40);
+            this.SdnfButton.TabIndex = 35;
+            this.SdnfButton.Text = "СДНФ и СКНФ";
+            this.SdnfButton.UseVisualStyleBackColor = true;
+            this.SdnfButton.Click += new System.EventHandler(this.SdnfButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Yi Baiti", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(86, 355);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(111, 27);
+            this.label1.TabIndex = 36;
+            this.label1.Text = "Решение:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 430);
+            this.ClientSize = new System.Drawing.Size(522, 504);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.SdnfButton);
             this.Controls.Add(this.errorMessage);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonX6);
@@ -426,6 +452,8 @@ namespace Calculator
         private System.Windows.Forms.Button buttonOpenScope;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label errorMessage;
+        private System.Windows.Forms.Button SdnfButton;
+        private System.Windows.Forms.Label label1;
     }
 }
 

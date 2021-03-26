@@ -167,6 +167,12 @@ namespace Calculator
             MainMenu form = new MainMenu();
             form.Visible = true;
         }
+
+        private void SdnfButton_Click(object sender, EventArgs e)
+        {
+            Solve_SDNF_SKNF form = new Solve_SDNF_SKNF(inputField.Text);
+            form.Visible = true;
+        }
     }
 
 
@@ -1024,6 +1030,61 @@ namespace Calculator
         public string GetValue()
         {
             return value;
+        }
+    }
+
+    public class FormText: Button
+    {
+        private int defaultHeight = 27; //px
+        private int defaultWordCount = 68; //count
+        public FormText(string text, float size = 11.25f)
+        {
+            Enabled = false;
+            BackColor = Color.White;
+            ForeColor = Color.Black;
+            Text = text;
+
+            int wordsCount = text.Length;
+            int height = 0;
+            while (wordsCount > 0 && wordsCount - defaultHeight >= 0)
+            {
+                height += defaultHeight;
+                wordsCount -= defaultWordCount;
+            }
+            if (height <= 0) height = defaultHeight;
+            Size = new Size(590, height);
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+
+            Font = new Font("Segoe UI", size, FontStyle.Bold);
+            TextAlign = ContentAlignment.TopLeft;
+        }
+    }
+
+    public class WindowDTF
+    {
+        private List<FormText> window = new List<FormText>();
+
+        public WindowDTF(string values, List<string> mainValues, string lastValue)
+        {
+            window.Add(new FormText("Решение СДНФ:"));
+            window.Add(new FormText("Найдём наборы, на которых функция принимает истинное значение:"));
+            Console.WriteLine(values);
+            window.Add(new FormText(values));
+            window.Add(new FormText("В соответствие найденным наборам поставим элементарные конъюнкции по всем переменным, причём если переменная в наборе принимает значение 0, то она будет записана с отрицанием:"));
+            for (int i = 0; i < mainValues.Count; i++) window.Add(new FormText(mainValues[i]));
+            window.Add(new FormText("Объединим конъюнкции с помощью операции ИЛИ и получим совершенную дизъюнктивную нормальную форму:"));
+            window.Add(new FormText(lastValue));
+        }
+
+        public FormText GetFormText(int index)
+        {
+            return window[index];
+        }
+
+        public int GetFormTextsCount()
+        {
+            return window.Count;
         }
     }
 }
