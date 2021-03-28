@@ -99,6 +99,36 @@ namespace Calculator
             inputField.Text += "(";
         }
 
+        private void x1_Button_Click(object sender, EventArgs e)
+        {
+            inputField.Text += "x1";
+        }
+
+        private void x2_Button_Click(object sender, EventArgs e)
+        {
+            inputField.Text += "x2";
+        }
+
+        private void x3_Button_Click(object sender, EventArgs e)
+        {
+            inputField.Text += "x3";
+        }
+
+        private void x4_Button_Click(object sender, EventArgs e)
+        {
+            inputField.Text += "x4";
+        }
+
+        private void x5_Button_Click(object sender, EventArgs e)
+        {
+            inputField.Text += "x5";
+        }
+
+        private void x6_Button_Click(object sender, EventArgs e)
+        {
+            inputField.Text += "x6";
+        }
+
         private void buttonCloseScope_Click(object sender, EventArgs e)
         {
             inputField.Text += ")";
@@ -294,23 +324,47 @@ namespace Calculator
 
     public class InputString
     {
-        private List<char> variablesString = new List<char>();
+        private List<string> variablesString = new List<string>();
         private VariablesAlphabet variablesAlphabet = new VariablesAlphabet();
         private SignsAlphabet signsAlphabet = new SignsAlphabet();
         private List<Tuple<char, int>> stepList = new List<Tuple<char, int>>();
 
+        private bool isDigit(string digit)
+        {
+           List<string> digitAlphabet = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+           for (int i = 0; i < digitAlphabet.Count; i++)
+           {
+                if (digit == digitAlphabet[i])
+                {
+                    return true;
+                }
+           }
+            return false;
+        }
+
         public InputString(string inputField)
         {
             List<char> copyVars = new List<char>(variablesAlphabet.GetAlphabet());
-            variablesString = new List<char>();
+            variablesString = new List<string>();
             for (int i = 0; i < inputField.Length; i++)
             {
                 for (int j = 0; j < copyVars.Count; j++)
                 {
-                    if (copyVars[j] == inputField[i])
+                    if (!isDigit(inputField[i].ToString()))
                     {
-                        variablesString.Add(inputField[i]);
-                        copyVars.RemoveAt(j);
+                        if (copyVars[j] == inputField[i])
+                        {
+                            if (inputField[i] == 'x' && isDigit(inputField[i + 1].ToString()))
+                            {
+                                variablesString.Add(inputField[i].ToString() + inputField[i + 1].ToString());
+                                i++;
+                            }
+                            else
+                            {
+                                variablesString.Add(inputField[i].ToString());
+                                copyVars.RemoveAt(j);
+                            }
+                        }
                     }
                 }
             }
@@ -342,14 +396,14 @@ namespace Calculator
             return stepList;
         }
 
-        public List<char> GetVariables()
+        public List<string> GetVariables()
         {
             return variablesString;
         }
 
         public int GetVariablesCount(string inputField)
         {
-            int res = 0;
+            /*int res = 0;
             List<char> copyVars = new List<char>(variablesAlphabet.GetAlphabet());
             for (int i = 0; i < inputField.Length; i++)
             {
@@ -362,7 +416,8 @@ namespace Calculator
                     }
                 }
             }
-            return res;
+            return res;*/
+            return variablesString.Count;
         }
 
         public int GetStepsCount(string inputField)
@@ -635,6 +690,19 @@ namespace Calculator
             return new string(arr);
         }
 
+        private bool isDigit(string digit)
+        {
+            List<string> digitAlphabet = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+            for (int i = 0; i < digitAlphabet.Count; i++)
+            {
+                if (digit == digitAlphabet[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public TableSolved(double rows, int column, string input, Table truthTable)
         {
             this.rows = rows;
@@ -735,7 +803,12 @@ namespace Calculator
                 }
                 else
                 {
-                    vars.Add(input[i].ToString());
+                    if (input[i] == 'x' && isDigit(input[i + 1].ToString()))
+                    {
+                        vars.Add(input[i].ToString() + input[i + 1].ToString());
+                        i++;
+                    }
+                    else vars.Add(input[i].ToString());
                 }
             }
 
@@ -791,11 +864,11 @@ namespace Calculator
                                     {
                                         string val1 = vars[vars.Count - 2] == "0" || vars[vars.Count - 2] == "1"
                                                     ? vars[vars.Count - 2]
-                                                    : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 2]))).GetValue();
+                                                    : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 2])).GetValue();
 
                                         string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
                                             ? vars[vars.Count - 1]
-                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 1])).GetValue();
 
                                         newValue = Solve(val1 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
 
@@ -807,7 +880,7 @@ namespace Calculator
                                     {
                                         string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
                                             ? vars[vars.Count - 1]
-                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 1])).GetValue();
 
                                         newValue = Solve(val2 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
 
@@ -829,7 +902,6 @@ namespace Calculator
                                     signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
                             {
                                 signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
-
                             }
                             else
                             {
@@ -841,11 +913,11 @@ namespace Calculator
                                     {
                                         string val1 = vars[vars.Count - 2] == "0" || vars[vars.Count - 2] == "1"
                                                     ? vars[vars.Count - 2]
-                                                    : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 2]))).GetValue();
+                                                    : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 2])).GetValue();
 
                                         string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
                                             ? vars[vars.Count - 1]
-                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 1])).GetValue();
 
                                         newValue = Solve(val1 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
 
@@ -857,7 +929,7 @@ namespace Calculator
                                     {
                                         string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
                                             ? vars[vars.Count - 1]
-                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+                                            : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 1])).GetValue();
 
                                         newValue = Solve(val2 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
                                         vars.RemoveAt(vars.Count - 1);
@@ -884,7 +956,13 @@ namespace Calculator
                     }
                     else
                     {
-                        vars.Add(input[i].ToString());
+                        if (input[i] == 'x' && isDigit(input[i + 1].ToString()))
+                        {
+                            vars.Add(input[i].ToString() + input[i + 1].ToString());
+                            i++;
+                        }
+                        else vars.Add(input[i].ToString());
+                        Console.WriteLine(vars[0]);
                     }
                 }
              
@@ -895,11 +973,11 @@ namespace Calculator
                     {
                         string val1 = vars[vars.Count - 2] == "0" || vars[vars.Count - 2] == "1"
                             ? vars[vars.Count - 2]
-                        : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 2]))).GetValue();
+                        : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 2])).GetValue();
 
                         string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
                             ? vars[vars.Count - 1]
-                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+                            : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 1])).GetValue();
 
                         newValue = Solve(val1 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
 
@@ -911,7 +989,7 @@ namespace Calculator
                     {
                         string val2 = vars[vars.Count - 1] == "0" || vars[vars.Count - 1] == "1"
                             ? vars[vars.Count - 1]
-                            : truthTable.GetCell(l, truthTable.GetVariableIndex(Convert.ToChar(vars[vars.Count - 1]))).GetValue();
+                            : truthTable.GetCell(l, truthTable.GetVariableIndex(vars[vars.Count - 1])).GetValue();
 
                         newValue = Solve(val2 == "1", val2 == "1", Convert.ToChar(signs[signs.Count - 1].GetValue())) ? "1" : "0";
                         vars.RemoveAt(vars.Count - 1);
@@ -958,7 +1036,7 @@ namespace Calculator
     {
         private List<List<TableCell>> _table = new List<List<TableCell>>();
 
-        private List<char> variables = new List<char>();
+        private List<string> variables = new List<string>();
         private InputString inputString;
         private double rows;
         private int column;
@@ -994,7 +1072,7 @@ namespace Calculator
             }
         }
 
-        public int GetVariableIndex(char var)
+        public int GetVariableIndex(string var)
         {
             for (int i = 0; i < variables.Count; i++)
             {

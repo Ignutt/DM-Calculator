@@ -53,6 +53,12 @@ namespace Calculator
             this.SdnfButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.x1_Button = new System.Windows.Forms.Button();
+            this.x2_Button = new System.Windows.Forms.Button();
+            this.x3_Button = new System.Windows.Forms.Button();
+            this.x4_Button = new System.Windows.Forms.Button();
+            this.x5_Button = new System.Windows.Forms.Button();
+            this.x6_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputField
@@ -319,11 +325,83 @@ namespace Calculator
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // x1_Button
+            // 
+            this.x1_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.x1_Button.Location = new System.Drawing.Point(162, 271);
+            this.x1_Button.Name = "x1_Button";
+            this.x1_Button.Size = new System.Drawing.Size(40, 40);
+            this.x1_Button.TabIndex = 38;
+            this.x1_Button.Text = "x1";
+            this.x1_Button.UseVisualStyleBackColor = true;
+            this.x1_Button.Click += new System.EventHandler(this.x1_Button_Click);
+            // 
+            // x2_Button
+            // 
+            this.x2_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.x2_Button.Location = new System.Drawing.Point(218, 271);
+            this.x2_Button.Name = "x2_Button";
+            this.x2_Button.Size = new System.Drawing.Size(40, 40);
+            this.x2_Button.TabIndex = 39;
+            this.x2_Button.Text = "x2";
+            this.x2_Button.UseVisualStyleBackColor = true;
+            this.x2_Button.Click += new System.EventHandler(this.x2_Button_Click);
+            // 
+            // x3_Button
+            // 
+            this.x3_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.x3_Button.Location = new System.Drawing.Point(276, 271);
+            this.x3_Button.Name = "x3_Button";
+            this.x3_Button.Size = new System.Drawing.Size(40, 40);
+            this.x3_Button.TabIndex = 40;
+            this.x3_Button.Text = "x3";
+            this.x3_Button.UseVisualStyleBackColor = true;
+            this.x3_Button.Click += new System.EventHandler(this.x3_Button_Click);
+            // 
+            // x4_Button
+            // 
+            this.x4_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.x4_Button.Location = new System.Drawing.Point(332, 271);
+            this.x4_Button.Name = "x4_Button";
+            this.x4_Button.Size = new System.Drawing.Size(40, 40);
+            this.x4_Button.TabIndex = 41;
+            this.x4_Button.Text = "x4";
+            this.x4_Button.UseVisualStyleBackColor = true;
+            this.x4_Button.Click += new System.EventHandler(this.x4_Button_Click);
+            // 
+            // x5_Button
+            // 
+            this.x5_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.x5_Button.Location = new System.Drawing.Point(388, 271);
+            this.x5_Button.Name = "x5_Button";
+            this.x5_Button.Size = new System.Drawing.Size(40, 40);
+            this.x5_Button.TabIndex = 42;
+            this.x5_Button.Text = "x5";
+            this.x5_Button.UseVisualStyleBackColor = true;
+            this.x5_Button.Click += new System.EventHandler(this.x5_Button_Click);
+            // 
+            // x6_Button
+            // 
+            this.x6_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.x6_Button.Location = new System.Drawing.Point(444, 271);
+            this.x6_Button.Name = "x6_Button";
+            this.x6_Button.Size = new System.Drawing.Size(40, 40);
+            this.x6_Button.TabIndex = 43;
+            this.x6_Button.Text = "x6";
+            this.x6_Button.UseVisualStyleBackColor = true;
+            this.x6_Button.Click += new System.EventHandler(this.x6_Button_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(522, 504);
+            this.Controls.Add(this.x6_Button);
+            this.Controls.Add(this.x5_Button);
+            this.Controls.Add(this.x4_Button);
+            this.Controls.Add(this.x3_Button);
+            this.Controls.Add(this.x2_Button);
+            this.Controls.Add(this.x1_Button);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SdnfButton);
@@ -385,6 +463,12 @@ namespace Calculator
         private System.Windows.Forms.Button SdnfButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button x1_Button;
+        private System.Windows.Forms.Button x2_Button;
+        private System.Windows.Forms.Button x3_Button;
+        private System.Windows.Forms.Button x4_Button;
+        private System.Windows.Forms.Button x5_Button;
+        private System.Windows.Forms.Button x6_Button;
     }
 }
 
