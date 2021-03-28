@@ -10,18 +10,18 @@ using System.Windows.Forms;
 
 namespace Calculator
 {
-    public partial class Solve_SDNF : Form
+    public partial class Solve_SKNF : Form
     {
         private InputString inputString;
         private Table table;
-        private WindowDTF windowsDTF;
+        private WindowKTF windowsDTF;
         private TableSolved tableSolved;
 
         private string values = "";
         private List<string> mainValues;
         private string lastValue = "";
 
-        public Solve_SDNF(string input)
+        public Solve_SKNF(string input)
         {
             InitializeComponent();
 
@@ -35,21 +35,19 @@ namespace Calculator
             tableSolved = new TableSolved(Math.Pow(2, inputString.GetVariablesCount(str)), inputString.GetStepsCount(str), str,
                 table);
 
+            KTF.Location = tableOut.Location + new Size(tableOut.Size.Width + 2, 0);
 
-            DTF.Location = tableOut.Location + new Size(tableOut.Size.Width + 2, 0);
+            CalculateKTF();
 
 
-            CalculateDTF();
-
-            
-            windowsDTF = new WindowDTF(values, mainValues, lastValue);
+            windowsDTF = new WindowKTF(values, mainValues, lastValue);
 
             for (int i = 0; i < windowsDTF.GetFormTextsCount(); i++)
             {
-                DTF.Controls.Add(windowsDTF.GetFormText(i));
+                KTF.Controls.Add(windowsDTF.GetFormText(i));
             }
 
-            for(int i = 0; i < table.GetRows() + 1; i++)
+            for (int i = 0; i < table.GetRows() + 1; i++)
             {
                 for (int j = 0; j < table.GetColumns(); j++)
                 {
@@ -57,14 +55,15 @@ namespace Calculator
                 }
             }
         }
-        private void CalculateDTF()
+
+        private void CalculateKTF()
         {
             mainValues = new List<string>();
 
             int l = 1;
             for (int i = 1; i < tableSolved.GetRows() + 1; i++)
             {
-                if (tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue() == "1")
+                if (tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue() == "0")
                 {
                     string str = "{";
                     for (int j = 0; j < table.GetColumns(); j++)
@@ -78,18 +77,19 @@ namespace Calculator
                     l++;
                     for (int j = 0; j < table.GetColumns(); j++)
                     {
-                        if (table.GetCell(i, j).GetValue() == "1") mainValues[mainValues.Count - 1] += table.GetCell(0, j).GetValue();
+                        if (table.GetCell(i, j).GetValue() == "0") mainValues[mainValues.Count - 1] += table.GetCell(0, j).GetValue();
                         else mainValues[mainValues.Count - 1] += "¬" + table.GetCell(0, j).GetValue();
 
-                        if (table.GetCell(i, j).GetValue() == "1") lastValue += table.GetCell(0, j).GetValue();
+                        if (table.GetCell(i, j).GetValue() == "0") lastValue += table.GetCell(0, j).GetValue();
                         else lastValue += "¬" + table.GetCell(0, j).GetValue();
                     }
 
-                    lastValue += "  ∨  ";
+                    lastValue += "  ∧  ";
                     values += str;
                 }
             }
             lastValue = lastValue.Remove(lastValue.Length - 5);
         }
+
     }
 }

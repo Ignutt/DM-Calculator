@@ -1,7 +1,7 @@
 ﻿
 namespace Calculator
 {
-    partial class Solve_SDNF
+    partial class Solve_SKNF
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace Calculator
         private void InitializeComponent()
         {
             this.tableOut = new System.Windows.Forms.FlowLayoutPanel();
-            this.DTF = new System.Windows.Forms.FlowLayoutPanel();
+            this.KTF = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // tableOut
@@ -40,28 +40,28 @@ namespace Calculator
             this.tableOut.Location = new System.Drawing.Point(12, 12);
             this.tableOut.Name = "tableOut";
             this.tableOut.Size = new System.Drawing.Size(472, 571);
-            this.tableOut.TabIndex = 37;
+            this.tableOut.TabIndex = 38;
             // 
-            // DTF
+            // KTF
             // 
-            this.DTF.AutoScroll = true;
-            this.DTF.Location = new System.Drawing.Point(508, 12);
-            this.DTF.Name = "DTF";
-            this.DTF.Size = new System.Drawing.Size(625, 571);
-            this.DTF.TabIndex = 38;
+            this.KTF.AutoScroll = true;
+            this.KTF.Location = new System.Drawing.Point(508, 12);
+            this.KTF.Name = "KTF";
+            this.KTF.Size = new System.Drawing.Size(625, 571);
+            this.KTF.TabIndex = 39;
             // 
-            // Solve_SDNF
+            // Solve_SKNF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1145, 595);
-            this.Controls.Add(this.DTF);
+            this.Controls.Add(this.KTF);
             this.Controls.Add(this.tableOut);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Solve_SDNF";
+            this.Name = "Solve_SKNF";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Решение СДНФ и СКНФ";
+            this.Text = "Решение СКНФ";
             this.ResumeLayout(false);
 
         }
@@ -69,6 +69,6 @@ namespace Calculator
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel tableOut;
-        private System.Windows.Forms.FlowLayoutPanel DTF;
+        private System.Windows.Forms.FlowLayoutPanel KTF;
     }
 }

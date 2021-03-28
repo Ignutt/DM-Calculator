@@ -61,11 +61,17 @@
     <Compile Include="KTF.Designer.cs">
       <DependentUpon>KTF.cs</DependentUpon>
     </Compile>
-    <Compile Include="Solve_SDNF_SKNF.cs">
+    <Compile Include="Solve_SDNF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Solve_SDNF_SKNF.Designer.cs">
-      <DependentUpon>Solve_SDNF_SKNF.cs</DependentUpon>
+    <Compile Include="Solve_SDNF.Designer.cs">
+      <DependentUpon>Solve_SDNF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Solve_SKNF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Solve_SKNF.Designer.cs">
+      <DependentUpon>Solve_SKNF.cs</DependentUpon>
     </Compile>
     <Compile Include="TruthTableWindow.cs">
       <SubType>Form</SubType>
@@ -99,8 +105,11 @@
     <EmbeddedResource Include="KTF.resx">
       <DependentUpon>KTF.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Solve_SDNF_SKNF.resx">
-      <DependentUpon>Solve_SDNF_SKNF.cs</DependentUpon>
+    <EmbeddedResource Include="Solve_SDNF.resx">
+      <DependentUpon>Solve_SDNF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Solve_SKNF.resx">
+      <DependentUpon>Solve_SKNF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TruthTableWindow.resx">
       <DependentUpon>TruthTableWindow.cs</DependentUpon>

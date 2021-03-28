@@ -13,4 +13,5 @@ D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.MainMenu.resou
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.TruthTableWindow.resources
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.DTF.resources
 D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.KTF.resources
-D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Solve_SDNF_SKNF.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Solve_SDNF.resources
+D:\spacework\freelance\Calculator\Calculator\obj\Debug\Calculator.Solve_SKNF.resources

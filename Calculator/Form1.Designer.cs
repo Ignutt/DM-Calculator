@@ -46,18 +46,13 @@ namespace Calculator
             this.buttonOne = new System.Windows.Forms.Button();
             this.buttonA = new System.Windows.Forms.Button();
             this.buttonZero = new System.Windows.Forms.Button();
-            this.buttonX6 = new System.Windows.Forms.Button();
-            this.buttonX4 = new System.Windows.Forms.Button();
-            this.buttonX5 = new System.Windows.Forms.Button();
-            this.buttonX3 = new System.Windows.Forms.Button();
-            this.buttonX2 = new System.Windows.Forms.Button();
             this.buttonCloseScope = new System.Windows.Forms.Button();
-            this.buttonX1 = new System.Windows.Forms.Button();
             this.buttonOpenScope = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.errorMessage = new System.Windows.Forms.Label();
             this.SdnfButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputField
@@ -244,61 +239,6 @@ namespace Calculator
             this.buttonZero.UseVisualStyleBackColor = true;
             this.buttonZero.Click += new System.EventHandler(this.buttonZero_Click);
             // 
-            // buttonX6
-            // 
-            this.buttonX6.Cursor = System.Windows.Forms.Cursors.No;
-            this.buttonX6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonX6.Location = new System.Drawing.Point(444, 271);
-            this.buttonX6.Name = "buttonX6";
-            this.buttonX6.Size = new System.Drawing.Size(40, 40);
-            this.buttonX6.TabIndex = 32;
-            this.buttonX6.Text = "X6";
-            this.buttonX6.UseVisualStyleBackColor = true;
-            // 
-            // buttonX4
-            // 
-            this.buttonX4.Cursor = System.Windows.Forms.Cursors.No;
-            this.buttonX4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonX4.Location = new System.Drawing.Point(332, 271);
-            this.buttonX4.Name = "buttonX4";
-            this.buttonX4.Size = new System.Drawing.Size(40, 40);
-            this.buttonX4.TabIndex = 31;
-            this.buttonX4.Text = "X4";
-            this.buttonX4.UseVisualStyleBackColor = true;
-            // 
-            // buttonX5
-            // 
-            this.buttonX5.Cursor = System.Windows.Forms.Cursors.No;
-            this.buttonX5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonX5.Location = new System.Drawing.Point(388, 271);
-            this.buttonX5.Name = "buttonX5";
-            this.buttonX5.Size = new System.Drawing.Size(40, 40);
-            this.buttonX5.TabIndex = 30;
-            this.buttonX5.Text = "X5";
-            this.buttonX5.UseVisualStyleBackColor = true;
-            // 
-            // buttonX3
-            // 
-            this.buttonX3.Cursor = System.Windows.Forms.Cursors.No;
-            this.buttonX3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonX3.Location = new System.Drawing.Point(276, 271);
-            this.buttonX3.Name = "buttonX3";
-            this.buttonX3.Size = new System.Drawing.Size(40, 40);
-            this.buttonX3.TabIndex = 29;
-            this.buttonX3.Text = "X3";
-            this.buttonX3.UseVisualStyleBackColor = true;
-            // 
-            // buttonX2
-            // 
-            this.buttonX2.Cursor = System.Windows.Forms.Cursors.No;
-            this.buttonX2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonX2.Location = new System.Drawing.Point(218, 271);
-            this.buttonX2.Name = "buttonX2";
-            this.buttonX2.Size = new System.Drawing.Size(40, 40);
-            this.buttonX2.TabIndex = 28;
-            this.buttonX2.Text = "X2";
-            this.buttonX2.UseVisualStyleBackColor = true;
-            // 
             // buttonCloseScope
             // 
             this.buttonCloseScope.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -309,17 +249,6 @@ namespace Calculator
             this.buttonCloseScope.Text = ")";
             this.buttonCloseScope.UseVisualStyleBackColor = true;
             this.buttonCloseScope.Click += new System.EventHandler(this.buttonCloseScope_Click);
-            // 
-            // buttonX1
-            // 
-            this.buttonX1.Cursor = System.Windows.Forms.Cursors.No;
-            this.buttonX1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonX1.Location = new System.Drawing.Point(162, 271);
-            this.buttonX1.Name = "buttonX1";
-            this.buttonX1.Size = new System.Drawing.Size(40, 40);
-            this.buttonX1.TabIndex = 26;
-            this.buttonX1.Text = "X1";
-            this.buttonX1.UseVisualStyleBackColor = true;
             // 
             // buttonOpenScope
             // 
@@ -364,7 +293,7 @@ namespace Calculator
             this.SdnfButton.Name = "SdnfButton";
             this.SdnfButton.Size = new System.Drawing.Size(145, 40);
             this.SdnfButton.TabIndex = 35;
-            this.SdnfButton.Text = "СДНФ и СКНФ";
+            this.SdnfButton.Text = "СДНФ";
             this.SdnfButton.UseVisualStyleBackColor = true;
             this.SdnfButton.Click += new System.EventHandler(this.SdnfButton_Click);
             // 
@@ -378,22 +307,29 @@ namespace Calculator
             this.label1.TabIndex = 36;
             this.label1.Text = "Решение:";
             // 
+            // button2
+            // 
+            this.button2.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Location = new System.Drawing.Point(203, 444);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(145, 40);
+            this.button2.TabIndex = 37;
+            this.button2.Text = "СКНФ";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(522, 504);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SdnfButton);
             this.Controls.Add(this.errorMessage);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.buttonX6);
-            this.Controls.Add(this.buttonX4);
-            this.Controls.Add(this.buttonX5);
-            this.Controls.Add(this.buttonX3);
-            this.Controls.Add(this.buttonX2);
             this.Controls.Add(this.buttonCloseScope);
-            this.Controls.Add(this.buttonX1);
             this.Controls.Add(this.buttonOpenScope);
             this.Controls.Add(this.buttonZ);
             this.Controls.Add(this.buttonX);
@@ -442,18 +378,13 @@ namespace Calculator
         private System.Windows.Forms.Button buttonOne;
         private System.Windows.Forms.Button buttonA;
         private System.Windows.Forms.Button buttonZero;
-        private System.Windows.Forms.Button buttonX6;
-        private System.Windows.Forms.Button buttonX4;
-        private System.Windows.Forms.Button buttonX5;
-        private System.Windows.Forms.Button buttonX3;
-        private System.Windows.Forms.Button buttonX2;
         private System.Windows.Forms.Button buttonCloseScope;
-        private System.Windows.Forms.Button buttonX1;
         private System.Windows.Forms.Button buttonOpenScope;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label errorMessage;
         private System.Windows.Forms.Button SdnfButton;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

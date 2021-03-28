@@ -148,6 +148,9 @@ namespace Calculator
 
         private void Solve(object sender, EventArgs e)
         {
+            DefaultSolve form = new DefaultSolve(inputField.Text);
+            form.Visible = true;
+            errorMessage.Visible = false;
             /*try
             {
                 DefaultSolve form = new DefaultSolve(inputField.Text);
@@ -158,20 +161,42 @@ namespace Calculator
             {
                 errorMessage.Visible = true;
             }*/
-            DefaultSolve form = new DefaultSolve(inputField.Text);
-            form.Visible = true;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainMenu form = new MainMenu();
             form.Visible = true;
+
+
         }
 
         private void SdnfButton_Click(object sender, EventArgs e)
         {
-            Solve_SDNF_SKNF form = new Solve_SDNF_SKNF(inputField.Text);
-            form.Visible = true;
+            try
+            {
+                Solve_SDNF form = new Solve_SDNF(inputField.Text);
+                form.Visible = true;
+                errorMessage.Visible = false;
+            }
+            catch
+            {
+                errorMessage.Visible = true;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Solve_SKNF form = new Solve_SKNF(inputField.Text);
+                form.Visible = true;
+                errorMessage.Visible = false;
+            }
+            catch
+            {
+                errorMessage.Visible = true;
+            }
         }
     }
 
@@ -432,11 +457,6 @@ namespace Calculator
                         indexesOpen.RemoveAt(indexesOpen.Count - 1);
                     }
                 }
-
-            for (int i = 0; i < scopes.Count; i++)
-            {
-                Console.WriteLine("Item1: " + scopes[i].Item1 + " Item2: " + scopes[i].Item2 + " i: " + i);
-            }
         }
 
         public SolvingString(string str)
@@ -746,10 +766,11 @@ namespace Calculator
             vars = new List<string>();
             signs = new List<Sign>();
 
-            int heigh = 1;
             for (int l = 1; l < rows + 1; l++)
             {
                 _table.Add(new List<TableCell>());
+                vars = new List<string>();
+                signs = new List<Sign>();
                 for (int i = 0; i < input.Length; i++)
                 {
                     if (signsAlphabet.isSign(input[i].ToString()) || input[i] == ')' || input[i] == '(')
@@ -808,6 +829,7 @@ namespace Calculator
                                     signs[signs.Count - 1].GetValue() != ")" && signs[signs.Count - 1].GetValue() != "(")
                             {
                                 signs.Add(new Sign(input[i].ToString(), signsAlphabet.GetSignPriority(input[i].ToString())));
+
                             }
                             else
                             {
@@ -864,11 +886,9 @@ namespace Calculator
                     {
                         vars.Add(input[i].ToString());
                     }
-                    Console.WriteLine("Variables count: " + vars.Count);
                 }
-
-                Console.WriteLine("Last var is: " + vars[0]);
-                while (signs.Count != 0 && vars.Count > 1)
+             
+                while (signs.Count != 0)
                 {
                     string newValue = "";
                     if (signs[signs.Count - 1].GetValue() != "¬")
@@ -899,10 +919,11 @@ namespace Calculator
                     }
                     vars.Add(newValue);
 
-                    Console.WriteLine("new value is equal: " + newValue);
                     TableCell newButton = new TableCell(newValue, l, l, 120);
                     newButton.SetColor(255, 200, 200, 200);
                     _table[l].Add(newButton);
+
+
                 }
             }
         }
@@ -980,7 +1001,6 @@ namespace Calculator
                 if (variables[i] == var) return i;
             }
 
-            Console.WriteLine("Can not find variable");
             return -1;
         }
         public TableCell GetCell(int x, int y)
@@ -1069,11 +1089,36 @@ namespace Calculator
         {
             window.Add(new FormText("Решение СДНФ:"));
             window.Add(new FormText("Найдём наборы, на которых функция принимает истинное значение:"));
-            Console.WriteLine(values);
             window.Add(new FormText(values));
             window.Add(new FormText("В соответствие найденным наборам поставим элементарные конъюнкции по всем переменным, причём если переменная в наборе принимает значение 0, то она будет записана с отрицанием:"));
             for (int i = 0; i < mainValues.Count; i++) window.Add(new FormText(mainValues[i]));
             window.Add(new FormText("Объединим конъюнкции с помощью операции ИЛИ и получим совершенную дизъюнктивную нормальную форму:"));
+            window.Add(new FormText(lastValue));
+        }
+
+        public FormText GetFormText(int index)
+        {
+            return window[index];
+        }
+
+        public int GetFormTextsCount()
+        {
+            return window.Count;
+        }
+    }
+
+    public class WindowKTF
+    {
+        private List<FormText> window = new List<FormText>();
+
+        public WindowKTF(string values, List<string> mainValues, string lastValue)
+        {
+            window.Add(new FormText("Решение СKНФ:"));
+            window.Add(new FormText("Найдём наборы, на которых функция принимает ложное значение:"));
+            window.Add(new FormText(values));
+            window.Add(new FormText("В соответствие найденным наборам поставим элементарные дизъюнкции по всем переменным, причём если переменная в наборе принимает значение 1, то она будет записана с отрицанием:"));
+            for (int i = 0; i < mainValues.Count; i++) window.Add(new FormText(mainValues[i]));
+            window.Add(new FormText("Объединим дизъюнкции с помощью операции И и получим совершенную конъюнктивную нормальную форму:"));
             window.Add(new FormText(lastValue));
         }
 
