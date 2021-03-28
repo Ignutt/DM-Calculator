@@ -61,6 +61,12 @@
     <Compile Include="KTF.Designer.cs">
       <DependentUpon>KTF.cs</DependentUpon>
     </Compile>
+    <Compile Include="PolinomJekalkina.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PolinomJekalkina.Designer.cs">
+      <DependentUpon>PolinomJekalkina.cs</DependentUpon>
+    </Compile>
     <Compile Include="Solve_SDNF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KTF.resx">
       <DependentUpon>KTF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PolinomJekalkina.resx">
+      <DependentUpon>PolinomJekalkina.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Solve_SDNF.resx">
       <DependentUpon>Solve_SDNF.cs</DependentUpon>

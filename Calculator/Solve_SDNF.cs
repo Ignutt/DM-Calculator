@@ -41,7 +41,7 @@ namespace Calculator
 
             CalculateDTF();
 
-            
+
             windowsDTF = new WindowDTF(values, mainValues, lastValue);
 
             for (int i = 0; i < windowsDTF.GetFormTextsCount(); i++)
@@ -49,7 +49,7 @@ namespace Calculator
                 DTF.Controls.Add(windowsDTF.GetFormText(i));
             }
 
-            for(int i = 0; i < table.GetRows() + 1; i++)
+            for (int i = 0; i < table.GetRows() + 1; i++)
             {
                 for (int j = 0; j < table.GetColumns(); j++)
                 {

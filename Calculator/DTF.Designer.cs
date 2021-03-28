@@ -92,7 +92,7 @@ namespace Calculator
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "DTF";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "DTF";
+            this.Text = "Дискретная математика";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DTF_FormClosed);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

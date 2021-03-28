@@ -228,6 +228,27 @@ namespace Calculator
                 errorMessage.Visible = true;
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
+            form.Visible = true;
+            /*try
+            {
+                PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
+                form.Visible = true;
+                errorMessage.Visible = false;
+            }
+            catch
+            {
+                errorMessage.Visible = true;
+            }*/
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            if (inputField.Text.Length > 0) inputField.Text = inputField.Text.Remove(inputField.Text.Length - 1);
+        }
     }
 
 
@@ -403,20 +424,6 @@ namespace Calculator
 
         public int GetVariablesCount(string inputField)
         {
-            /*int res = 0;
-            List<char> copyVars = new List<char>(variablesAlphabet.GetAlphabet());
-            for (int i = 0; i < inputField.Length; i++)
-            {
-                for (int j = 0; j < copyVars.Count; j++)
-                {
-                    if (copyVars[j] == inputField[i])
-                    {
-                        res++;
-                        copyVars.RemoveAt(j);
-                    }
-                }
-            }
-            return res;*/
             return variablesString.Count;
         }
 
@@ -459,33 +466,6 @@ namespace Calculator
             return !a;
         }
     }
-
-
-    /*public class Table
-    {
-        InputString inputString = new InputString();
-        List<List<int>> local_table = new List<List<int>>();
-        public string MakeTable(string str)
-        {
-            string table = "";
-            int n = 0;
-            int count = inputString.GetVariablesCount(str);
-            for (int i = 0; i < Math.Pow(2, count); i++)
-            {
-                local_table.Add(new List<int>());
-                string s = Convert.ToString(n, 2);
-                while (s.Length < count) s = "0" + s;
-                for (int j = 0; j < count; j++)
-                {
-                    table += s[j];
-                    local_table[i].Add(int.Parse(s[j].ToString()));
-                }
-                table += "\r\n";
-                n++;
-            }
-            return table;
-        }
-    }*/
 
     class SolvingString
     {
@@ -1198,6 +1178,30 @@ namespace Calculator
             for (int i = 0; i < mainValues.Count; i++) window.Add(new FormText(mainValues[i]));
             window.Add(new FormText("Объединим дизъюнкции с помощью операции И и получим совершенную конъюнктивную нормальную форму:"));
             window.Add(new FormText(lastValue));
+        }
+
+        public FormText GetFormText(int index)
+        {
+            return window[index];
+        }
+
+        public int GetFormTextsCount()
+        {
+            return window.Count;
+        }
+    }
+
+    public class WindowPolinom
+    {
+        private List<FormText> window = new List<FormText>();
+
+        public WindowPolinom(List<string> functions, List<string> content1)
+        {
+            window.Add(new FormText("Решение Полином Жегалкина:"));
+            window.Add(new FormText("Запишем данную функцию в виде полинома Жегалкина с неопределёнными коэффициентами:"));
+            window.Add(new FormText(functions[0] + " = " + content1[content1.Count - 1]));
+            window.Add(new FormText(""));
+            for (int i = 0; i < content1.Count; i++) window.Add(new FormText(functions[i + 1] + " = " + content1[i]));
         }
 
         public FormText GetFormText(int index)

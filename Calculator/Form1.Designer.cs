@@ -59,12 +59,14 @@ namespace Calculator
             this.x4_Button = new System.Windows.Forms.Button();
             this.x5_Button = new System.Windows.Forms.Button();
             this.x6_Button = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputField
             // 
             this.inputField.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.inputField.Location = new System.Drawing.Point(87, 60);
+            this.inputField.Location = new System.Drawing.Point(50, 59);
             this.inputField.Name = "inputField";
             this.inputField.Size = new System.Drawing.Size(350, 31);
             this.inputField.TabIndex = 0;
@@ -391,11 +393,37 @@ namespace Calculator
             this.x6_Button.UseVisualStyleBackColor = true;
             this.x6_Button.Click += new System.EventHandler(this.x6_Button_Click);
             // 
+            // button3
+            // 
+            this.button3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button3.Location = new System.Drawing.Point(186, 490);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(186, 40);
+            this.button3.TabIndex = 44;
+            this.button3.Text = "Полином Жегалкина";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.deleteButton.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.deleteButton.Location = new System.Drawing.Point(406, 59);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(78, 31);
+            this.deleteButton.TabIndex = 45;
+            this.deleteButton.Text = "🠔";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 504);
+            this.ClientSize = new System.Drawing.Size(522, 568);
+            this.Controls.Add(this.deleteButton);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.x6_Button);
             this.Controls.Add(this.x5_Button);
             this.Controls.Add(this.x4_Button);
@@ -430,7 +458,7 @@ namespace Calculator
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Калькулятор";
+            this.Text = "Дискретная математика";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -469,6 +497,8 @@ namespace Calculator
         private System.Windows.Forms.Button x4_Button;
         private System.Windows.Forms.Button x5_Button;
         private System.Windows.Forms.Button x6_Button;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
 
