@@ -178,10 +178,7 @@ namespace Calculator
 
         private void Solve(object sender, EventArgs e)
         {
-            DefaultSolve form = new DefaultSolve(inputField.Text);
-            form.Visible = true;
-            errorMessage.Visible = false;
-            /*try
+            try
             {
                 DefaultSolve form = new DefaultSolve(inputField.Text);
                 form.Visible = true;
@@ -190,7 +187,7 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }*/
+            }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -231,9 +228,7 @@ namespace Calculator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
-            form.Visible = true;
-            /*try
+            try
             {
                 PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
                 form.Visible = true;
@@ -242,7 +237,7 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }*/
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -375,7 +370,7 @@ namespace Calculator
                     {
                         if (copyVars[j] == inputField[i])
                         {
-                            if (inputField[i] == 'x' && isDigit(inputField[i + 1].ToString()))
+                            if (inputField[i] == 'x' && isDigit(inputField[i + 1 < inputField.Length ? i + 1 : i].ToString()))
                             {
                                 variablesString.Add(inputField[i].ToString() + inputField[i + 1].ToString());
                                 i++;
@@ -588,13 +583,13 @@ namespace Calculator
         private int column;
 
         private Table truthTable;
-        private bool Solve(bool x, bool y, char sign)
+        public bool Solve(bool x, bool y, char sign)
         {
             switch (sign)
             {
                 case '∨': 
                     return (x || y);
-                    break;
+                    break; 
                 case '∧': 
                     return (x && y);
                     break;
@@ -783,7 +778,7 @@ namespace Calculator
                 }
                 else
                 {
-                    if (input[i] == 'x' && isDigit(input[i + 1].ToString()))
+                    if (input[i] == 'x' && isDigit(input[i + 1 < input.Length ? i + 1 : i].ToString()))
                     {
                         vars.Add(input[i].ToString() + input[i + 1].ToString());
                         i++;
@@ -936,7 +931,7 @@ namespace Calculator
                     }
                     else
                     {
-                        if (input[i] == 'x' && isDigit(input[i + 1].ToString()))
+                        if (input[i] == 'x' && isDigit(input[i + 1 < input.Length ? i + 1 : i].ToString()))
                         {
                             vars.Add(input[i].ToString() + input[i + 1].ToString());
                             i++;
@@ -1195,13 +1190,15 @@ namespace Calculator
     {
         private List<FormText> window = new List<FormText>();
 
-        public WindowPolinom(List<string> functions, List<string> content1)
+        public WindowPolinom(List<string> functions, List<string> content1, string firstContentLine, string resultString)
         {
             window.Add(new FormText("Решение Полином Жегалкина:"));
             window.Add(new FormText("Запишем данную функцию в виде полинома Жегалкина с неопределёнными коэффициентами:"));
-            window.Add(new FormText(functions[0] + " = " + content1[content1.Count - 1]));
+            window.Add(new FormText(functions[0] + " = " + firstContentLine));
             window.Add(new FormText(""));
             for (int i = 0; i < content1.Count; i++) window.Add(new FormText(functions[i + 1] + " = " + content1[i]));
+            window.Add(new FormText(""));
+            window.Add(new FormText(resultString));
         }
 
         public FormText GetFormText(int index)

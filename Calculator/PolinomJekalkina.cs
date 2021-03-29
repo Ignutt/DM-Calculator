@@ -19,6 +19,10 @@ namespace Calculator
 
         private List<string> functions = new List<string>();
         private List<string> content1 = new List<string>();
+        private string firstContentLine = "";
+        private string resultString = "";
+
+        private List<string> variables = new List<string>();
 
         public PolinomJekalkina(string input)
         {
@@ -42,7 +46,7 @@ namespace Calculator
             CalculatePolinom();
 
 
-            windowsPolinom = new WindowPolinom(functions, content1);
+            windowsPolinom = new WindowPolinom(functions, content1, firstContentLine, resultString);
 
             for (int i = 0; i < windowsPolinom.GetFormTextsCount(); i++)
             {
@@ -69,19 +73,33 @@ namespace Calculator
             functions.Add(firstLine);
 
             string forContent1 = "";
+            variables.Add(tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue());
+
+            resultString = tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue();
+            string lastValue = resultString;
             for (int i = 1; i < tableSolved.GetRows() + 1; i++)
             {
                 string str = "f(";
                 forContent1 = "";
+
+                variables.Add("");
                 for (int j = 0; j < tableSolved.GetColumns() + 1; j++)
                 {
                     str += table.GetCell(i, j).GetValue();
                     forContent1 += table.GetCell(i, j).GetValue();
                     if (j + 1 != table.GetColumns()) str += ", ";
+
+                    if (table.GetCell(i, j).GetValue() == "1") variables[i] += table.GetCell(0, j).GetValue();
                 }
                 str += ")";
 
-                content1.Add((content1.Count - 1 >= 0 ? content1[content1.Count - 1] : "") + (i != 1 ? " ⊕ " : "") + "a" + forContent1);
+                resultString += (tableSolved.Solve(tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue() == "1", lastValue == "1", '⊕') ? " ⊕ " + variables[i] : "");
+                //lastValue = tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue();
+
+                content1.Add((content1.Count - 1 >= 0 ? content1[content1.Count - 1] : "") + (i != 1 ? " ⊕ " : "") + "a" + forContent1 + " = "+ 
+                    (tableSolved.Solve(tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue() == "1", lastValue == "1", '⊕') ? "1" : "0"));
+                firstContentLine += "a" + forContent1 + variables[i] + " ";
+                if (i + 1 != tableSolved.GetRows() + 1) firstContentLine += " ⊕ ";
                 functions.Add(str);
             }
         }
