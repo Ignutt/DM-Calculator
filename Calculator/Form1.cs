@@ -178,7 +178,10 @@ namespace Calculator
 
         private void Solve(object sender, EventArgs e)
         {
-            try
+            DefaultSolve form = new DefaultSolve(inputField.Text);
+            form.Visible = true;
+
+            /*try
             {
                 DefaultSolve form = new DefaultSolve(inputField.Text);
                 form.Visible = true;
@@ -187,7 +190,7 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }
+            }*/
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -244,6 +247,7 @@ namespace Calculator
         {
             if (inputField.Text.Length > 0) inputField.Text = inputField.Text.Remove(inputField.Text.Length - 1);
         }
+
     }
 
 

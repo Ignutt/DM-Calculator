@@ -82,9 +82,9 @@ namespace Calculator
 
                         if (table.GetCell(i, j).GetValue() == "0") lastValue += table.GetCell(0, j).GetValue();
                         else lastValue += "¬" + table.GetCell(0, j).GetValue();
+                        lastValue += "  ∧  ";
                     }
 
-                    lastValue += "  ∧  ";
                     values += str;
                 }
             }
