@@ -231,7 +231,9 @@ namespace Calculator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
+            PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
+            form.Visible = true;
+            /*try
             {
                 PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
                 form.Visible = true;
@@ -240,7 +242,7 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }
+            }*/
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -1194,15 +1196,12 @@ namespace Calculator
     {
         private List<FormText> window = new List<FormText>();
 
-        public WindowPolinom(List<string> functions, List<string> content1, string firstContentLine, string resultString)
+        public WindowPolinom(string firstString, List<string> content)
         {
             window.Add(new FormText("Решение Полином Жегалкина:"));
             window.Add(new FormText("Запишем данную функцию в виде полинома Жегалкина с неопределёнными коэффициентами:"));
-            window.Add(new FormText(functions[0] + " = " + firstContentLine));
-            window.Add(new FormText(""));
-            for (int i = 0; i < content1.Count; i++) window.Add(new FormText(functions[i + 1] + " = " + content1[i]));
-            window.Add(new FormText(""));
-            window.Add(new FormText(resultString));
+            window.Add(new FormText(firstString));
+            for (int i = 0; i < content.Count; i++) window.Add(new FormText(content[i]));
         }
 
         public FormText GetFormText(int index)
