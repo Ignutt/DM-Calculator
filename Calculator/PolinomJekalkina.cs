@@ -24,6 +24,7 @@ namespace Calculator
         private string resultString = "";
         private List<string> content = new List<string>();
         private List<string> mainString = new List<string>();
+        private List<string> mainStringIndexes = new List<string>();
 
         public PolinomJekalkina(string input)
         {
@@ -124,11 +125,14 @@ namespace Calculator
             for (int i = 1; i < table.GetRows() + 1; i++) 
             {
                 string str = "";
+                string strIndexes = "";
                 for (int j = 0; j < table.GetColumns(); j++)
                 {
                     str += table.GetCell(i, j).GetValue() == "1" ? table.GetCell(0, j).GetValue() : "";
+                    strIndexes += table.GetCell(i, j).GetValue();
                 }
                 mainString.Add(str);
+                mainStringIndexes.Add(strIndexes);
             }
 
             for (int i = 1; i < table.GetRows() + 1; i++)
@@ -142,19 +146,19 @@ namespace Calculator
                     if (j + 1 != table.GetColumns()) func += ", ";
                 }
 
-                content.Add(func + ") = ");
+                content.Add(func + ") = a" + mainStringIndexes[0] + " ⊕ ");
                 for (int j = 1; j < mainString.Count; j++)
                 {
                     if (str.Count == 1)
                     {
                         Console.WriteLine(str[0]);
-                        if (str.Contains(mainString[j])) content[content.Count - 1] += mainString[j];
+                        if (str.Contains(mainString[j])) content[content.Count - 1] += "a" + mainStringIndexes[j] + mainString[j];
                     }
                     else if (str.Count != 0)
                     {
                         if (mainString[j].Length == 1 && str.Contains(mainString[j]))
                         {
-                            content[content.Count - 1] += mainString[j] + " ⊕ ";
+                            content[content.Count - 1] += "a" + mainStringIndexes[j] + mainString[j] + " ⊕ ";
                         }
                         else
                         {
@@ -170,12 +174,15 @@ namespace Calculator
                                     }
                                     if (!correct) mainCorrect = false;
                                 }
-                                if (mainCorrect) content[content.Count - 1] += mainString[j] + " ⊕ ";
+                                if (mainCorrect)
+                                {
+                                    content[content.Count - 1] += "a" + mainStringIndexes[j] + mainString[j] + " ⊕ ";
+                                }
                             }
                         }
                     }
                 }
-
+                if (str.Count != 1) content[content.Count - 1] = content[content.Count - 1].Remove(content[content.Count - 1].Length - 3);
             }
         }
 
