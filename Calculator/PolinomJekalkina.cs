@@ -18,10 +18,12 @@ namespace Calculator
         private TableSolved tableSolved;
 
 
+        private string firstElem = "a";
 
         private string firstString = "f(";
+        private string resultString = "";
         private List<string> content = new List<string>();
-        private string resultString = "Окончательно получаем: ";
+        private List<string> mainString = new List<string>();
 
         public PolinomJekalkina(string input)
         {
@@ -45,7 +47,7 @@ namespace Calculator
             CalculatePolinom();
 
 
-            windowsPolinom = new WindowPolinom(firstString, content);
+            windowsPolinom = new WindowPolinom(firstString, content, resultString);
 
             for (int i = 0; i < windowsPolinom.GetFormTextsCount(); i++)
             {
@@ -61,26 +63,26 @@ namespace Calculator
             }
         }
 
-        List<string> variablesExist = new List<string>();
-        List<string> variableInStep = new List<string>();
-        List<string> indexes = new List<string>();
 
         private void GenerateFirstLine()
         {
             for (int i = 0; i < table.GetColumns(); i++)
             {
-                variablesExist.Add(table.GetCell(0, i).GetValue());
                 firstString += table.GetCell(0, i).GetValue();
                 if (i + 1 != table.GetColumns()) firstString += ",";
             }
 
             firstString += ") = a";
 
-            for (int i = 0; i < variablesExist.Count; i++) firstString += "0";
+            for (int i = 0; i < table.GetColumns(); i++)
+            {
+                firstString += "0";
+                firstElem += "0";
+            }
             firstString += " ⊕ ";
 
             int factor = 1;
-            for (int k = 0; k < variablesExist.Count - 1; k++)
+            for (int k = 0; k < table.GetColumns() - 1; k++)
             {
                 for (int i = 2; i < table.GetRows(); i++)
                 {
@@ -101,137 +103,82 @@ namespace Calculator
                     if (countTruthVariable == factor)
                     {
                         firstString += "a" + index + variables + " ⊕ ";
-                        variableInStep.Add(variables);
-
-
-                        indexes.Add("");
-                        for (int m = 0; m < index.Length; m++)
-                        {
-                            indexes[indexes.Count - 1] += index[m];
-                            if (m + 1< index.Length) indexes[indexes.Count - 1] += ", ";
-                        }
                     }
                 }
                 factor++;
             }
 
             firstString += "a";
-            for (int i = 0; i < variablesExist.Count; i++) firstString += "1";
-            variableInStep.Add("");
-            for (int i = 0; i < variablesExist.Count; i++)
+            for (int i = 0; i < table.GetColumns(); i++) firstString += "1";
+            for (int i = 0; i < table.GetColumns(); i++)
             {
-                firstString += variablesExist[i];
-                variableInStep[variableInStep.Count - 1] += variablesExist[i];
+                firstString += table.GetCell(0, i).GetValue();
             } 
+
+
+            
         }
 
         private void GenerateContent()
         {
-            string step1 = "f(";
-            string firstElem = "a";
-            for (int i = 0; i < variablesExist.Count; i++) { 
-                step1 += "0";
-                if (i + 1 != variablesExist.Count) step1 += ", "; 
-            }
-            step1 += ") = ";
-            for (int i = 0; i < variablesExist.Count; i++)
+            for (int i = 1; i < table.GetRows() + 1; i++) 
             {
-                firstElem += "0";
-            }
-            step1 += firstElem + " = " + tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue() + " ⇒ " + firstElem + " = " + tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue();
-            content.Add(step1);
-
-
-            int factor = 1;
-            for (int k = 0; k < variablesExist.Count - 1; k++)
-            {
-                for (int i = 2; i < table.GetRows() + 1; i++)
-                {
-                    string str = "a";
-                    string activeElem = "a";
-
-                    for (int m = 0; m < variablesExist.Count; m++) str += "0";
-                    
-                    int countTruthVariable = 0;
-                    str += " ⊕ a";
-                    for (int j = 0; j < table.GetColumns(); j++)
-                    {
-                        str += table.GetCell(i, j).GetValue();
-                        activeElem += table.GetCell(i, j).GetValue();
-                        if (table.GetCell(i, j).GetValue() == "1")
-                        {
-                            countTruthVariable++;
-                        }
-                    }
-                    if (countTruthVariable == factor)
-                    {
-                        content.Add("f(" + indexes[i - 2] + ") = ");
-
-                        string newValue = tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue();
-                        str += " = " + tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue() + " ⊕ " + 
-                            activeElem + " = " + newValue + " ⇒ " + activeElem + " = " + (tableSolved.Solve(firstElem == "1", newValue == "1", '⊕') ? "1" : "0");
-
-                        content[content.Count - 1] += str;
-
-                    }
-                }
-                factor++;
-            }
-
-
-            string step3 = "f(";
-            for (int i = 0; i < variablesExist.Count; i++)
-            {
-                step3 += "1";
-                if (i + 1 != variablesExist.Count) step3 += ", ";
-            }
-            step3 += ") = ";
-
-            string lastElem = "a";
-            for (int i = 0; i < variablesExist.Count; i++)
-            {
-                lastElem += "1";
-            }
-
-            /*step3 += firstElem + " ⊕ " + lastElem + " = " + tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue() + " ⊕ " + lastElem + " = " 
-                + tableSolved.GetCell(Convert.ToInt32(tableSolved.GetRows()) - 1, tableSolved.GetColumns() - 1).GetValue() + " ⇒ " + lastElem + " = "
-                + (tableSolved.Solve(firstElem == "1", tableSolved.GetCell(Convert.ToInt32(tableSolved.GetRows()) - 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0");
-            content.Add(step3);*/
-
-            step3 += firstElem + " ⊕ ";
-            for (int i = 1; i < tableSolved.GetRows(); i++)
-            {
-                string a = "a";
+                string str = "";
                 for (int j = 0; j < table.GetColumns(); j++)
                 {
-                    a += table.GetCell(i, j).GetValue();
+                    str += table.GetCell(i, j).GetValue() == "1" ? table.GetCell(0, j).GetValue() : "";
                 }
-                step3 += a + " ⊕ ";
+                mainString.Add(str);
             }
-            step3 += lastElem + " = ";
 
-            for (int i = 1; i < tableSolved.GetRows(); i++)
+            for (int i = 1; i < table.GetRows() + 1; i++)
             {
-                step3 += tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue() + " ⊕ ";
-            }
-            step3 += lastElem + " = " + tableSolved.GetCell(Convert.ToInt32(tableSolved.GetRows()), tableSolved.GetColumns() - 1).GetValue() + " ⇒ " + lastElem + " = ";
-
-            string lastValue = "-1";
-            for (int i = 1; i < tableSolved.GetRows(); i+=2)
-            {
-                if (lastValue == "-1")
+                List<string> str = new List<string>();
+                string func = "f(";
+                for (int j = 0; j < table.GetColumns(); j++)
                 {
-                    lastValue = tableSolved.Solve(tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue() == "1",
-                        tableSolved.GetCell(i + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
-                } else
-                {
-                    lastValue = tableSolved.Solve(lastValue == "1", tableSolved.GetCell(i + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
+                    if (table.GetCell(i, j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
+                    func += table.GetCell(i, j).GetValue();
+                    if (j + 1 != table.GetColumns()) func += ", ";
                 }
-            }
-            step3 += lastValue;
-            content.Add(step3);
 
+                content.Add(func + ") = ");
+                for (int j = 1; j < mainString.Count; j++)
+                {
+                    if (str.Count == 1)
+                    {
+                        Console.WriteLine(str[0]);
+                        if (str.Contains(mainString[j])) content[content.Count - 1] += mainString[j];
+                    }
+                    else if (str.Count != 0)
+                    {
+                        if (mainString[j].Length == 1 && str.Contains(mainString[j]))
+                        {
+                            content[content.Count - 1] += mainString[j] + " ⊕ ";
+                        }
+                        else
+                        {
+                            if (mainString[j].Length <= str.Count)
+                            {
+                                bool mainCorrect = true;
+                                for (int l = 0; l < mainString[j].Length; l++)
+                                {
+                                    bool correct = false;
+                                    for (int k = 0; k < str.Count; k++)
+                                    {
+                                        if (mainString[j][l].ToString() == str[k]) correct = true;
+                                    }
+                                    if (!correct) mainCorrect = false;
+                                }
+                                if (mainCorrect) content[content.Count - 1] += mainString[j] + " ⊕ ";
+                            }
+                        }
+                    }
+                }
+
+            }
         }
+
 
         private void CalculatePolinom()
         {

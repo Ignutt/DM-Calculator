@@ -943,7 +943,6 @@ namespace Calculator
                             i++;
                         }
                         else vars.Add(input[i].ToString());
-                        Console.WriteLine(vars[0]);
                     }
                 }
              
@@ -1196,12 +1195,13 @@ namespace Calculator
     {
         private List<FormText> window = new List<FormText>();
 
-        public WindowPolinom(string firstString, List<string> content)
+        public WindowPolinom(string firstString, List<string> content, string resultString)
         {
             window.Add(new FormText("Решение Полином Жегалкина:"));
             window.Add(new FormText("Запишем данную функцию в виде полинома Жегалкина с неопределёнными коэффициентами:"));
             window.Add(new FormText(firstString));
             for (int i = 0; i < content.Count; i++) window.Add(new FormText(content[i]));
+            window.Add(new FormText("Окончательно получаем: " + resultString));
         }
 
         public FormText GetFormText(int index)

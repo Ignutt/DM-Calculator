@@ -39,7 +39,7 @@ namespace Calculator
             this.tableOut.BackColor = System.Drawing.SystemColors.Control;
             this.tableOut.Location = new System.Drawing.Point(12, 12);
             this.tableOut.Name = "tableOut";
-            this.tableOut.Size = new System.Drawing.Size(460, 571);
+            this.tableOut.Size = new System.Drawing.Size(460, 604);
             this.tableOut.TabIndex = 36;
             // 
             // tableOutFunc
@@ -49,14 +49,14 @@ namespace Calculator
             this.tableOutFunc.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tableOutFunc.Location = new System.Drawing.Point(478, 12);
             this.tableOutFunc.Name = "tableOutFunc";
-            this.tableOutFunc.Size = new System.Drawing.Size(460, 571);
+            this.tableOutFunc.Size = new System.Drawing.Size(460, 604);
             this.tableOutFunc.TabIndex = 37;
             // 
             // DefaultSolve
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1162, 590);
+            this.ClientSize = new System.Drawing.Size(1162, 628);
             this.Controls.Add(this.tableOutFunc);
             this.Controls.Add(this.tableOut);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
