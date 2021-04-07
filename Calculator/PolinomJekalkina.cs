@@ -135,6 +135,8 @@ namespace Calculator
                 mainStringIndexes.Add(strIndexes);
             }
 
+
+            // GerateForm
             for (int i = 1; i < table.GetRows() + 1; i++)
             {
                 List<string> str = new List<string>();
@@ -151,7 +153,6 @@ namespace Calculator
                 {
                     if (str.Count == 1)
                     {
-                        Console.WriteLine(str[0]);
                         if (str.Contains(mainString[j])) content[content.Count - 1] += "a" + mainStringIndexes[j] + mainString[j];
                     }
                     else if (str.Count != 0)
@@ -184,6 +185,116 @@ namespace Calculator
                 }
                 if (str.Count != 1) content[content.Count - 1] = content[content.Count - 1].Remove(content[content.Count - 1].Length - 3);
             }
+            // Generate Form Number
+            string firstValue = tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue();
+            for (int i = 2; i < table.GetRows() + 1; i++)
+            {
+                List<string> str = new List<string>();
+
+                for (int j = 0; j < table.GetColumns(); j++)
+                {
+                    if (table.GetCell(i, j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
+                }
+
+                content[i - 1] += " = " + firstValue;
+                for (int j = 1; j < mainString.Count; j++)
+                {
+                    if (str.Count == 1)
+                    {
+                        if (str.Contains(mainString[j]))
+                        {
+                            content[i - 1] += " ⊕ " + tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue();
+                        }
+                    }
+                    else if (str.Count != 0)
+                    {
+                        if (mainString[j].Length == 1 && str.Contains(mainString[j]))
+                        {
+                            content[i - 1] += " ⊕ " + tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue();
+                            Console.WriteLine(i);
+                        }
+                        else
+                        {
+                            if (mainString[j].Length <= str.Count)
+                            {
+                                bool mainCorrect = true;
+                                for (int l = 0; l < mainString[j].Length; l++)
+                                {
+                                    bool correct = false;
+                                    for (int k = 0; k < str.Count; k++)
+                                    {
+                                        if (mainString[j][l].ToString() == str[k]) correct = true;
+                                    }
+                                    if (!correct) mainCorrect = false;
+                                }
+                                if (mainCorrect)
+                                {
+                                    content[i - 1] += " ⊕ " + tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue();
+                                    Console.WriteLine(i);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (str.Count != 1) content[i - 1] += " ⊕ " + tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue();
+
+                if (str.Count != 1) content[i - 1] = content[i - 1].Remove(content[i - 1].Length - 3);
+            }
+
+            //Solve!!!
+            string resValue = firstValue;
+            for (int i = 2; i < table.GetRows() + 1; i++)
+            {
+                List<string> str = new List<string>();
+                string lastValue = firstValue;
+
+                for (int j = 0; j < table.GetColumns(); j++)
+                {
+                    if (table.GetCell(i, j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
+                }
+
+                content[i - 1] += " = ";
+                for (int j = 1; j < mainString.Count; j++)
+                {
+                    if (str.Count == 1)
+                    {
+                        if (str.Contains(mainString[j])) content[i - 1] += tableSolved.Solve(firstValue == "1", tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
+                    }
+                    else if (str.Count != 0)
+                    {
+                        if (mainString[j].Length == 1 && str.Contains(mainString[j]))
+                        {
+                            lastValue = tableSolved.Solve(lastValue == "1", tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
+                        }
+                        else
+                        {
+                            if (mainString[j].Length <= str.Count)
+                            {
+                                bool mainCorrect = true;
+                                for (int l = 0; l < mainString[j].Length; l++)
+                                {
+                                    bool correct = false;
+                                    for (int k = 0; k < str.Count; k++)
+                                    {
+                                        if (mainString[j][l].ToString() == str[k]) correct = true;
+                                    }
+                                    if (!correct) mainCorrect = false;
+                                }
+                                if (mainCorrect)
+                                {
+                                    lastValue = tableSolved.Solve(lastValue == "1", tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
+                                    resValue = lastValue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (str.Count != 1) content[i - 1] += " = " + resValue;
+                if (str.Count != 1) content[i - 1] = content[i - 1].Remove(content[i - 1].Length - 3);
+            }
+
+            content[content.Count - 1] += resValue;
         }
 
 
