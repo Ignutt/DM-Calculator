@@ -24,7 +24,9 @@ namespace Calculator
         private string resultString = "";
         private List<string> content = new List<string>();
         private List<string> mainString = new List<string>();
+        private List<string> mainStringCopy = new List<string>();
         private List<string> mainStringIndexes = new List<string>();
+        private List<int> mainStringOfTable = new List<int>();
 
         public PolinomJekalkina(string input)
         {
@@ -114,37 +116,50 @@ namespace Calculator
             for (int i = 0; i < table.GetColumns(); i++)
             {
                 firstString += table.GetCell(0, i).GetValue();
-            } 
+            }
 
 
-            
+
         }
 
         private void GenerateContent()
         {
-            for (int i = 1; i < table.GetRows() + 1; i++) 
+            int factor = 0;
+            for (int k = 0; k < table.GetRows() + 1; k++)
             {
-                string str = "";
-                string strIndexes = "";
-                for (int j = 0; j < table.GetColumns(); j++)
+                for (int i = 1; i < table.GetRows() + 1; i++)
                 {
-                    str += table.GetCell(i, j).GetValue() == "1" ? table.GetCell(0, j).GetValue() : "";
-                    strIndexes += table.GetCell(i, j).GetValue();
+                    string str = "";
+                    int countTruth = 0;
+                    string strIndexes = "";
+                    for (int j = 0; j < table.GetColumns(); j++)
+                    {
+                        str += table.GetCell(i, j).GetValue() == "1" ? table.GetCell(0, j).GetValue() : "";
+                        if (table.GetCell(i, j).GetValue() == "1") countTruth++;
+                        strIndexes += table.GetCell(i, j).GetValue();
+                    }
+                    if (countTruth == factor)
+                    {
+                        mainStringIndexes.Add(strIndexes);
+                        mainString.Add(str);
+                        mainStringCopy.Add(str);
+                        mainStringOfTable.Add(i);
+                    }
                 }
-                mainString.Add(str);
-                mainStringIndexes.Add(strIndexes);
+                factor++;
             }
 
+            //for (int i = 0; i < mainString.Count; i++) Console.WriteLine(mainString[i] + mainStringOfTable[i]);
 
             // GerateForm
-            for (int i = 1; i < table.GetRows() + 1; i++)
+            for (int i = 0; i < mainString.Count; i++)
             {
                 List<string> str = new List<string>();
                 string func = "f(";
                 for (int j = 0; j < table.GetColumns(); j++)
                 {
-                    if (table.GetCell(i, j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
-                    func += table.GetCell(i, j).GetValue();
+                    if (table.GetCell(mainStringOfTable[i], j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
+                    func += table.GetCell(mainStringOfTable[i], j).GetValue();
                     if (j + 1 != table.GetColumns()) func += ", ";
                 }
 
@@ -185,33 +200,44 @@ namespace Calculator
                 }
                 if (str.Count != 1) content[content.Count - 1] = content[content.Count - 1].Remove(content[content.Count - 1].Length - 3);
             }
+
             // Generate Form Number
             string firstValue = tableSolved.GetCell(1, tableSolved.GetColumns() - 1).GetValue();
-            for (int i = 2; i < table.GetRows() + 1; i++)
+            if (firstValue == "1") resultString += firstValue + " ⊕ ";
+            content[0] += " = " + firstValue;
+            for (int i = 1; i < mainString.Count; i++)
             {
+                // STR
                 List<string> str = new List<string>();
-
                 for (int j = 0; j < table.GetColumns(); j++)
                 {
-                    if (table.GetCell(i, j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
+                    if (table.GetCell(mainStringOfTable[i], j).GetValue() == "1")
+                    {
+                        str.Add(table.GetCell(0, j).GetValue());
+                    }
                 }
 
-                content[i - 1] += " = " + firstValue;
+                content[i] += " = " + firstValue;
+                string lastValue = firstValue;
                 for (int j = 1; j < mainString.Count; j++)
                 {
                     if (str.Count == 1)
                     {
                         if (str.Contains(mainString[j]))
                         {
-                            content[i - 1] += " ⊕ " + tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue();
+                            if (tableSolved.Solve(firstValue == "1", tableSolved.GetCell(mainStringOfTable[j], tableSolved.GetColumns() - 1).GetValue() == "1", '⊕')) resultString += mainStringCopy[j] + " ⊕ ";
+
+                            mainStringCopy[j] = tableSolved.Solve(firstValue == "1", tableSolved.GetCell(mainStringOfTable[j], tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
+                            content[i] += " ⊕ " + tableSolved.GetCell(mainStringOfTable[j], tableSolved.GetColumns() - 1).GetValue() + " = " + mainStringCopy[j];
                         }
                     }
                     else if (str.Count != 0)
                     {
-                        if (mainString[j].Length == 1 && str.Contains(mainString[j]))
+                        if ((mainStringCopy[j] == "1" || mainStringCopy[j] == "0") && str.Contains(mainString[j]))
                         {
-                            content[i - 1] += " ⊕ " + tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue();
-                            Console.WriteLine(i);
+                            content[i] += " ⊕ " + mainStringCopy[j];
+                            lastValue = tableSolved.Solve(lastValue == "1", mainStringCopy[j] == "1", '⊕') ? "1" : "0";
+                            Console.WriteLine(lastValue);
                         }
                         else
                         {
@@ -229,72 +255,34 @@ namespace Calculator
                                 }
                                 if (mainCorrect)
                                 {
-                                    content[i - 1] += " ⊕ " + tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue();
-                                    Console.WriteLine(i);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (str.Count != 1) content[i - 1] += " ⊕ " + tableSolved.GetCell(i, tableSolved.GetColumns() - 1).GetValue();
-
-                if (str.Count != 1) content[i - 1] = content[i - 1].Remove(content[i - 1].Length - 3);
-            }
-
-            //Solve!!!
-            string resValue = firstValue;
-            for (int i = 2; i < table.GetRows() + 1; i++)
-            {
-                List<string> str = new List<string>();
-                string lastValue = firstValue;
-
-                for (int j = 0; j < table.GetColumns(); j++)
-                {
-                    if (table.GetCell(i, j).GetValue() == "1") str.Add(table.GetCell(0, j).GetValue());
-                }
-
-                content[i - 1] += " = ";
-                for (int j = 1; j < mainString.Count; j++)
-                {
-                    if (str.Count == 1)
-                    {
-                        if (str.Contains(mainString[j])) content[i - 1] += tableSolved.Solve(firstValue == "1", tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
-                    }
-                    else if (str.Count != 0)
-                    {
-                        if (mainString[j].Length == 1 && str.Contains(mainString[j]))
-                        {
-                            lastValue = tableSolved.Solve(lastValue == "1", tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
-                        }
-                        else
-                        {
-                            if (mainString[j].Length <= str.Count)
-                            {
-                                bool mainCorrect = true;
-                                for (int l = 0; l < mainString[j].Length; l++)
-                                {
-                                    bool correct = false;
-                                    for (int k = 0; k < str.Count; k++)
+                                    if (mainStringCopy[j] != "1" && mainStringCopy[j] != "0")
                                     {
-                                        if (mainString[j][l].ToString() == str[k]) correct = true;
+                                        if (tableSolved.Solve(lastValue == "1", tableSolved.GetCell(mainStringOfTable[j], tableSolved.GetColumns() - 1).GetValue() == "1", '⊕')) resultString += mainStringCopy[j] + " ⊕ ";
+
+                                        lastValue = tableSolved.Solve(lastValue == "1", tableSolved.GetCell(mainStringOfTable[j], tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
+                                        mainStringCopy[j] = lastValue;
+                                        Console.WriteLine(lastValue);
+                                        content[i] += " ⊕ " + tableSolved.GetCell(mainStringOfTable[j], tableSolved.GetColumns() - 1).GetValue() + " = " + mainStringCopy[j];
+
                                     }
-                                    if (!correct) mainCorrect = false;
-                                }
-                                if (mainCorrect)
-                                {
-                                    lastValue = tableSolved.Solve(lastValue == "1", tableSolved.GetCell(j + 1, tableSolved.GetColumns() - 1).GetValue() == "1", '⊕') ? "1" : "0";
-                                    resValue = lastValue;
+                                    else
+                                    {
+                                        lastValue = tableSolved.Solve(lastValue == "1", mainStringCopy[j] == "1", '⊕') ? "1" : "0";
+                                        Console.WriteLine(lastValue);
+                                        content[i] += " ⊕ " + mainStringCopy[j];
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                Console.WriteLine();
+                if (str.Count != 1)
+                {
+                }
 
-                if (str.Count != 1) content[i - 1] += " = " + resValue;
-                if (str.Count != 1) content[i - 1] = content[i - 1].Remove(content[i - 1].Length - 3);
             }
-
-            content[content.Count - 1] += resValue;
+            resultString = resultString.Remove(resultString.Length - 3);
         }
 
 

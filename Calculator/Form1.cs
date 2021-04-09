@@ -306,9 +306,9 @@ namespace Calculator
             signsAlphabet.Add(new Sign("∧", 7));
             signsAlphabet.Add(new Sign("∨", 6));
             signsAlphabet.Add(new Sign("⊕", 5));
-            signsAlphabet.Add(new Sign("↑", 4));
-            signsAlphabet.Add(new Sign("↓", 3));
-            signsAlphabet.Add(new Sign("→", 2));
+            signsAlphabet.Add(new Sign("→", 4));
+            signsAlphabet.Add(new Sign("↑", 3));
+            signsAlphabet.Add(new Sign("↓", 2));
             signsAlphabet.Add(new Sign("≡", 1));
             //signsAlphabet.Add(new Sign("(", -100));
             //signsAlphabet.Add(new Sign(")", -100));
