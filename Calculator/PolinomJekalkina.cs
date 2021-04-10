@@ -66,6 +66,18 @@ namespace Calculator
             }
         }
 
+        bool isDigit(string digit)
+        {
+            List<string> digitAlphabet = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+            for (int i = 0; i < digitAlphabet.Count; i++)
+            {
+                if (digit == digitAlphabet[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private void GenerateFirstLine()
         {
@@ -172,13 +184,13 @@ namespace Calculator
                     }
                     else if (str.Count != 0)
                     {
-                        if (mainString[j].Length == 1 && str.Contains(mainString[j]))
+                        if (mainString[j].Length <= 2 && str.Contains(mainString[j]))
                         {
-                            content[content.Count - 1] += "a" + mainStringIndexes[j] + mainString[j] + " ⊕ ";
+                            if (mainString[j].Length == 2 && isDigit(mainString[j][1].ToString()) || mainString[j].Length == 1) content[content.Count - 1] += "a" + mainStringIndexes[j] + mainString[j] + " ⊕ ";
                         }
                         else
                         {
-                            if (mainString[j].Length <= str.Count)
+                            if (mainString[j].Length <= str.Count * 2)
                             {
                                 bool mainCorrect = true;
                                 for (int l = 0; l < mainString[j].Length; l++)
@@ -186,7 +198,19 @@ namespace Calculator
                                     bool correct = false;
                                     for (int k = 0; k < str.Count; k++)
                                     {
-                                        if (mainString[j][l].ToString() == str[k]) correct = true;
+                                        if (mainString[j][l].ToString() == "x" && isDigit(mainString[j][mainString[j].Length > 1 ? l + 1 : 0].ToString()))
+                                        {
+                                            if (mainString[j][l].ToString() + mainString[j][l + 1].ToString() == str[k])
+                                            {
+                                                correct = true;
+                                                l++;
+                                                k++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (mainString[j][l].ToString() == str[k]) correct = true;
+                                        }
                                     }
                                     if (!correct) mainCorrect = false;
                                 }
@@ -198,7 +222,7 @@ namespace Calculator
                         }
                     }
                 }
-                if (str.Count != 1) content[content.Count - 1] = content[content.Count - 1].Remove(content[content.Count - 1].Length - 3);
+                if (str.Count != 1) content[content.Count - 1] = content[content.Count - 1].Remove(content[content.Count - 1].Length - 2);
             }
 
             // Generate Form Number
@@ -241,7 +265,7 @@ namespace Calculator
                         }
                         else
                         {
-                            if (mainString[j].Length <= str.Count)
+                            if (mainString[j].Length <= str.Count * 2)
                             {
                                 bool mainCorrect = true;
                                 for (int l = 0; l < mainString[j].Length; l++)
@@ -249,7 +273,19 @@ namespace Calculator
                                     bool correct = false;
                                     for (int k = 0; k < str.Count; k++)
                                     {
-                                        if (mainString[j][l].ToString() == str[k]) correct = true;
+                                        if (mainString[j][l].ToString() == "x" && isDigit(mainString[j][l + 1].ToString()))
+                                        {
+                                            if (mainString[j][l].ToString() + mainString[j][l + 1].ToString() == str[k])
+                                            {
+                                                correct = true;
+                                                l++;
+                                                k++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (mainString[j][l].ToString() == str[k]) correct = true;
+                                        }
                                     }
                                     if (!correct) mainCorrect = false;
                                 }

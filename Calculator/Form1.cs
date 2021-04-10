@@ -178,10 +178,8 @@ namespace Calculator
 
         private void Solve(object sender, EventArgs e)
         {
-            DefaultSolve form = new DefaultSolve(inputField.Text);
-            form.Visible = true;
 
-            /*try
+            try
             {
                 DefaultSolve form = new DefaultSolve(inputField.Text);
                 form.Visible = true;
@@ -190,7 +188,7 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }*/
+            }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -231,9 +229,7 @@ namespace Calculator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
-            form.Visible = true;
-            /*try
+            try
             {
                 PolinomJekalkina form = new PolinomJekalkina(inputField.Text);
                 form.Visible = true;
@@ -242,7 +238,7 @@ namespace Calculator
             catch
             {
                 errorMessage.Visible = true;
-            }*/
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -306,8 +302,8 @@ namespace Calculator
             signsAlphabet.Add(new Sign("∧", 7));
             signsAlphabet.Add(new Sign("∨", 6));
             signsAlphabet.Add(new Sign("⊕", 5));
-            signsAlphabet.Add(new Sign("→", 4));
-            signsAlphabet.Add(new Sign("↑", 3));
+            signsAlphabet.Add(new Sign("↑", 4));
+            signsAlphabet.Add(new Sign("→", 3));
             signsAlphabet.Add(new Sign("↓", 2));
             signsAlphabet.Add(new Sign("≡", 1));
             //signsAlphabet.Add(new Sign("(", -100));

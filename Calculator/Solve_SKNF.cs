@@ -75,6 +75,7 @@ namespace Calculator
 
                     mainValues.Add("K" + (l).ToString() + ":" + str + " - ");
                     l++;
+                    lastValue += "(";
                     for (int j = 0; j < table.GetColumns(); j++)
                     {
                         if (table.GetCell(i, j).GetValue() == "0") mainValues[mainValues.Count - 1] += table.GetCell(0, j).GetValue();
@@ -82,10 +83,10 @@ namespace Calculator
 
                         if (table.GetCell(i, j).GetValue() == "0") lastValue += table.GetCell(0, j).GetValue();
                         else lastValue += "¬" + table.GetCell(0, j).GetValue();
-                        lastValue += "  ∧  ";
                     }
-
                     values += str;
+                    lastValue += ")";
+                    lastValue += "  ∧  ";
                 }
             }
             lastValue = lastValue.Remove(lastValue.Length - 5);

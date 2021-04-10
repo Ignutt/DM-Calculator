@@ -51,7 +51,6 @@ namespace Calculator
             this.button1 = new System.Windows.Forms.Button();
             this.errorMessage = new System.Windows.Forms.Label();
             this.SdnfButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.x1_Button = new System.Windows.Forms.Button();
             this.x2_Button = new System.Windows.Forms.Button();
@@ -305,16 +304,6 @@ namespace Calculator
             this.SdnfButton.UseVisualStyleBackColor = true;
             this.SdnfButton.Click += new System.EventHandler(this.SdnfButton_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Yi Baiti", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(86, 355);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 27);
-            this.label1.TabIndex = 36;
-            this.label1.Text = "Решение:";
-            // 
             // button2
             // 
             this.button2.Cursor = System.Windows.Forms.Cursors.Arrow;
@@ -431,7 +420,6 @@ namespace Calculator
             this.Controls.Add(this.x2_Button);
             this.Controls.Add(this.x1_Button);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.SdnfButton);
             this.Controls.Add(this.errorMessage);
             this.Controls.Add(this.button1);
@@ -489,7 +477,6 @@ namespace Calculator
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label errorMessage;
         private System.Windows.Forms.Button SdnfButton;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button x1_Button;
         private System.Windows.Forms.Button x2_Button;
